@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/fedeghe/Father/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/Father?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/fedeghe/father/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/father?branch=master)
 
 
 # Father ... I promise  
