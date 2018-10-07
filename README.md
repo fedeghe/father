@@ -1,7 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/fedeghe/Father/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/Father?branch=master)
 
 
-# Father  
+# Father ... I promise  
 
 I tried to investigate a bit in the Promise implemetation, and this is the result. 
 
