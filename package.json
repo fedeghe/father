@@ -1,5 +1,5 @@
 {
-  "name": "father",
+  "name": "balle",
   "version": "1.0.0",
   "description": "Simple promise implementation",
   "main": "index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fedeghe/father.git"
+    "url": "https://github.com/fedeghe/balle.git"
   },
   "keywords": [
     "simple Promise"
@@ -18,9 +18,9 @@
   "author": "Federico Ghedina <fedeghe@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fedeghe/father/issues"
+    "url": "https://github.com/fedeghe/balle/issues"
   },
-  "homepage": "https://github.com/fedeghe/father#readme",
+  "homepage": "https://github.com/fedeghe/balle#readme",
   "devDependencies": {
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",

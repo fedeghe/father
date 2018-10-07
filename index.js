@@ -2,10 +2,10 @@
  * 
  * @param {*} executor 
  */
-function Father(executor) {
+function Balle(executor) {
     var self = this,
         done = false;
-    this.status = Father.STATUSES.PENDING;
+    this.status = Balle.STATUSES.PENDING;
     this.value = undefined;
     this.cause = undefined;
     this.thens = [];
@@ -14,34 +14,34 @@ function Father(executor) {
     executor = executor || function () {};
     try {
         executor(function ___SOLVER(value) {
-            if (done || self.status !== Father.STATUSES.PENDING) return;
+            if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
-            self.status = Father.STATUSES.FULFILLED;
+            self.status = Balle.STATUSES.FULFILLED;
             self.value = value;
             self.thens.forEach(function (then) {
                 then(self.value);
             }, self);
-            Father._isFunc(self.onFinally) && self.onFinally(self.value)
+            Balle._isFunc(self.onFinally) && self.onFinally(self.value)
         }, function ___REJECTOR(cause) {
-            if (done || self.status !== Father.STATUSES.PENDING) return;
+            if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
-            self.status = Father.STATUSES.REJECTED;
+            self.status = Balle.STATUSES.REJECTED;
             self.cause = cause;
-            Father._isFunc(self.onCatch) && self.onCatch(self.cause);
-            Father._isFunc(self.onFinally) && self.onFinally(self.cause);
+            Balle._isFunc(self.onCatch) && self.onCatch(self.cause);
+            Balle._isFunc(self.onFinally) && self.onFinally(self.cause);
         });
     } catch(e) {
-        return Father.reject(e.message);
+        return Balle.reject(e.message);
     }
     return this;
 }
 
-Father.prototype.then = function (cb) {
+Balle.prototype.then = function (cb) {
     switch (this.status) {
-        case Father.STATUSES.PENDING:
+        case Balle.STATUSES.PENDING:
             this.thens.push(cb);
             break;
-        case Father.STATUSES.FULFILLED:
+        case Balle.STATUSES.FULFILLED:
             cb(this.value);
             break;
     }
@@ -49,9 +49,9 @@ Father.prototype.then = function (cb) {
     return this;
 };
 
-Father.prototype.catch = function (cb) {
+Balle.prototype.catch = function (cb) {
     switch (this.status) {
-        case Father.STATUSES.PENDING:
+        case Balle.STATUSES.PENDING:
             this.onCatch = cb;
             break;
         default:
@@ -61,7 +61,7 @@ Father.prototype.catch = function (cb) {
     return this;
 };
 
-Father.prototype.finally = function (cb) {
+Balle.prototype.finally = function (cb) {
     this.onFinally = cb;
     return this;
 };
@@ -69,29 +69,29 @@ Father.prototype.finally = function (cb) {
 /**
  * STATIC section
  */
-Father.STATUSES = {
+Balle.STATUSES = {
     PENDING: 'PENDING',
     FULFILLED: 'FULFILLED',
     REJECTED: 'REJECTED'
 };
 
-Father._isFunc = function (f) { return typeof f === 'function';};
+Balle._isFunc = function (f) { return typeof f === 'function';};
 
-Father._isIterable = function (obj) {
+Balle._isIterable = function (obj) {
     if (obj == null) { return false; }
-    return Father._isFunc(obj[Symbol.iterator]);
+    return Balle._isFunc(obj[Symbol.iterator]);
 };
 
-Father.all = function (pros) {
+Balle.all = function (pros) {
     //check iterability of pros
-    if (!Father._isIterable(pros)){
-        return Father.reject('Father.all acceps an Iterable Promise only');
+    if (!Balle._isIterable(pros)){
+        return Balle.reject('Balle.all acceps an Iterable Promise only');
     }
     var results = [],
         l = pros.length,
         solN = 0;
 
-    return new Father(function (resolve, reject) {
+    return new Balle(function (resolve, reject) {
         pros.forEach((pro, i) => {
             pro.then(function (v) {
                 solN++;
@@ -102,28 +102,28 @@ Father.all = function (pros) {
     });
 };
 
-Father.race = function (pros) {
+Balle.race = function (pros) {
     //check iterability of pros
-    if (!Father._isIterable(pros)) {
-        return Father.reject('Father.race acceps an Iterable Promise only');
+    if (!Balle._isIterable(pros)) {
+        return Balle.reject('Balle.race acceps an Iterable Promise only');
     }
-    return new Father(function (resolve, reject) {
+    return new Balle(function (resolve, reject) {
         pros.forEach(pro => pro.then(resolve).catch(reject));
     });
 };
 
-Father.reject = function (cause) {
-    return new Father(function (s, r) {return r(cause);});
+Balle.reject = function (cause) {
+    return new Balle(function (s, r) {return r(cause);});
 };
 
-Father.resolve = function (mix) {
-    return mix instanceof Father
-        ? new Father(function (resolve, reject) {
+Balle.resolve = function (mix) {
+    return mix instanceof Balle
+        ? new Balle(function (resolve, reject) {
             mix.then(resolve).catch(reject);
         })
-        : new Father(function (s, r) { s(mix); });
+        : new Balle(function (s, r) { s(mix); });
 };
 
 if (typeof module !== 'undefined'){
-    module.exports = Father;
+    module.exports = Balle;
 }

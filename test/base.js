@@ -1,11 +1,11 @@
 var assert = require('assert'),
-    Father = require('../index.js');
+    Balle = require('../index.js');
 
 var RESULTS = {
     STRING: 'promise resolved',
     CAUSE: 'this is the cause',
-    ALL_NOT_ITERABLE: 'Father.all acceps an Iterable Promise only',
-    RACE_NOT_ITERABLE: 'Father.race acceps an Iterable Promise only'
+    ALL_NOT_ITERABLE: 'Balle.all acceps an Iterable Promise only',
+    RACE_NOT_ITERABLE: 'Balle.race acceps an Iterable Promise only'
 };
 
 
@@ -13,28 +13,28 @@ describe('Solving', function () {
     describe('basic solve', function () {
         
         it('resolve straigth', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
                 done();
             });
 
-            assert.equal(resolvingPromise.status, Father.STATUSES.FULFILLED);
+            assert.equal(resolvingPromise.status, Balle.STATUSES.FULFILLED);
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
         it('resolve straigth and then', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
                 done();
             });
             resolvingPromise.then(function (result) {
                 assert.equal(result, RESULTS.STRING);    
             });
-            assert.equal(resolvingPromise.status, Father.STATUSES.FULFILLED);
+            assert.equal(resolvingPromise.status, Balle.STATUSES.FULFILLED);
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
 
         it('resolve asynch ', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
                     resolve(RESULTS.STRING);
                 }, 100);
@@ -46,7 +46,7 @@ describe('Solving', function () {
         });
 
         it('resolve asynch and exec finally', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
                     resolve(RESULTS.STRING);
                 }, 100);
@@ -66,15 +66,15 @@ describe('Rejection', function () {
     describe('basic reject', function () {
 
         it('reject straigth', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 reject(RESULTS.STRING);
                 done();
             });
-            assert.equal(resolvingPromise.status, Father.STATUSES.REJECTED);
+            assert.equal(resolvingPromise.status, Balle.STATUSES.REJECTED);
             assert.equal(resolvingPromise.value, undefined);
         });
         it('reject asynch ', (done) => {
-            const resolvingPromise = new Father((resolve, reject) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
                     reject(RESULTS.CAUSE);
                 }, 100);
@@ -84,7 +84,7 @@ describe('Rejection', function () {
                 assert.equal(result, 'irrelevant');
                 done();
             }).catch((cause) => {
-                assert.equal(resolvingPromise.status, Father.STATUSES.REJECTED);
+                assert.equal(resolvingPromise.status, Balle.STATUSES.REJECTED);
                 assert.equal(resolvingPromise.result, undefined);
                 assert.equal(cause, RESULTS.CAUSE);
                 done();
@@ -96,20 +96,20 @@ describe('Rejection', function () {
 
 
 describe('Static section', function () {
-    describe('Father.all', function () {
+    describe('Balle.all', function () {
         it('solves all the promises', (done) => {
-            Father.all([
-                new Father(function (resolve, reject) {
+            Balle.all([
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(100);
                     },100);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(101);
                     }, 200);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(102);
                     }, 300);
@@ -123,18 +123,18 @@ describe('Static section', function () {
             });
         });
         it('solves all the promises but one', (done) => {
-            Father.all([
-                new Father(function (resolve, reject) {
+            Balle.all([
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(100);
                     }, 100);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(101);
                     }, 200);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         reject(RESULTS.CAUSE);
                     }, 300);
@@ -150,7 +150,7 @@ describe('Static section', function () {
             });
         });
         it('does not solves all cause not iterable', (done) => {
-            Father.all({}).catch(function (cause) {
+            Balle.all({}).catch(function (cause) {
                 assert.equal(cause, RESULTS.ALL_NOT_ITERABLE);
                 done();
             }).then(function (res) {
@@ -162,20 +162,20 @@ describe('Static section', function () {
         });
     });
 
-    describe('Father.race', function () {
+    describe('Balle.race', function () {
         it('the right winner', (done) => {
-            Father.race([
-                new Father(function (resolve, reject) {
+            Balle.race([
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(1000);
                     }, 100);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(Math.PI);
                     }, 200);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(9876543210);
                     }, 300);
@@ -188,18 +188,18 @@ describe('Static section', function () {
             });
         });
         it('the right winner, one rejects, catched', (done) => {
-            Father.race([
-                new Father(function (resolve, reject) {
+            Balle.race([
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         reject(1000);
                     }, 100);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(Math.PI);
                     }, 200);
                 }),
-                new Father(function (resolve, reject) {
+                new Balle(function (resolve, reject) {
                     setTimeout(function () {
                         resolve(9876543210);
                     }, 300);
@@ -214,7 +214,7 @@ describe('Static section', function () {
             });
         });
         it('does not solves all cause not iterable', (done) => {
-            Father.race({}).catch(function (cause) {
+            Balle.race({}).catch(function (cause) {
                 assert.equal(cause, RESULTS.RACE_NOT_ITERABLE);
                 done();
             }).then(function (res) {
@@ -226,9 +226,9 @@ describe('Static section', function () {
         });
     });
 
-    describe('Father.reject', function () {
+    describe('Balle.reject', function () {
         it('rejects as expected', (done) => {
-            Father.reject(RESULTS.CAUSE).catch(function (cause) {
+            Balle.reject(RESULTS.CAUSE).catch(function (cause) {
                 assert.equal(cause, RESULTS.CAUSE);
                 done();
             }).then(function (res) {
@@ -240,14 +240,14 @@ describe('Static section', function () {
         });
     });
 
-    describe('Father.resolve', function () {
+    describe('Balle.resolve', function () {
         it('resolve as expected passing a promise', (done) => {
-            var p = new Father(function (resolve) {
+            var p = new Balle(function (resolve) {
                 setTimeout(function () {
                     resolve(RESULTS.STRING);
                 }, 200);
             });
-            Father.resolve(p).then(function (result) {
+            Balle.resolve(p).then(function (result) {
                 assert.equal(result, RESULTS.STRING);
                 done();
             }).finally(function (res) {// done();
@@ -256,8 +256,8 @@ describe('Static section', function () {
             });
         });
         it('resolve as expected passing a value', (done) => {
-            var p = new Father();
-            Father.resolve(RESULTS.STRING)
+            var p = new Balle();
+            Balle.resolve(RESULTS.STRING)
             .then(function (result) {
                 assert.equal(result, RESULTS.STRING);
                 done();
@@ -269,7 +269,7 @@ describe('Static section', function () {
     });
     describe('Some edge cases', function () {
         it('try to reject a solved one', (done) => {
-            var p = new Father(function (resolve, reject) {
+            var p = new Balle(function (resolve, reject) {
                 resolve(RESULTS.STRING);
                 reject(200);
                 
@@ -279,7 +279,7 @@ describe('Static section', function () {
             });
         });
         it('not a function passed to constructor', (done) => {
-            new Father('not null but not a function')
+            new Balle('not null but not a function')
             .then(function (res) {
                 throw 'This will not run';
             }).catch(function (message) {
@@ -293,19 +293,19 @@ describe('Static section', function () {
 
     describe('utilities', function () {
         it('isFunc', () => {
-            assert.equal(Father._isFunc(function () {}), true);
-            assert.equal(Father._isFunc({}), false);
-            assert.equal(Father._isFunc(1), false);
-            assert.equal(Father._isFunc('function'), false);
-            assert.equal(Father._isFunc([1,2,3,4,5]), false);  
+            assert.equal(Balle._isFunc(function () {}), true);
+            assert.equal(Balle._isFunc({}), false);
+            assert.equal(Balle._isFunc(1), false);
+            assert.equal(Balle._isFunc('function'), false);
+            assert.equal(Balle._isFunc([1,2,3,4,5]), false);  
         });
         it('isIterable', () => {
-            assert.equal(Father._isIterable(function () { }), false);
-            assert.equal(Father._isIterable({}), false);
-            assert.equal(Father._isIterable(1), false);
-            assert.equal(Father._isIterable('function'), true);
-            assert.equal(Father._isIterable(null), false);
-            assert.equal(Father._isIterable([1, 2, 3, 4, 5]), true);
+            assert.equal(Balle._isIterable(function () { }), false);
+            assert.equal(Balle._isIterable({}), false);
+            assert.equal(Balle._isIterable(1), false);
+            assert.equal(Balle._isIterable('function'), true);
+            assert.equal(Balle._isIterable(null), false);
+            assert.equal(Balle._isIterable([1, 2, 3, 4, 5]), true);
         });
     });
     
