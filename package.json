@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fedeghe/Father.git"
+    "url": "https://github.com/fedeghe/father.git"
   },
   "keywords": [
     "simple Promise"
@@ -18,9 +18,9 @@
   "author": "Federico Ghedina <fedeghe@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fedeghe/Father/issues"
+    "url": "https://github.com/fedeghe/father/issues"
   },
-  "homepage": "https://github.com/fedeghe/Father#readme",
+  "homepage": "https://github.com/fedeghe/father#readme",
   "devDependencies": {
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
