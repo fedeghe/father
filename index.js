@@ -11,6 +11,7 @@ function Father(executor) {
     this.thens = [];
     this.onCatch = undefined;
     this.onFinally = undefined;
+    executor = executor || function () {};
     try {
         executor(function ___SOLVER(value) {
             if (done || self.status !== Father.STATUSES.PENDING) return;
@@ -24,14 +25,13 @@ function Father(executor) {
         }, function ___REJECTOR(cause) {
             if (done || self.status !== Father.STATUSES.PENDING) return;
             done = true;
-            if (self.status !== Father.STATUSES.PENDING) return;
             self.status = Father.STATUSES.REJECTED;
             self.cause = cause;
             Father._isFunc(self.onCatch) && self.onCatch(self.cause);
             Father._isFunc(self.onFinally) && self.onFinally(self.cause);
         });
     } catch(e) {
-        this.catch(e.message);
+        return Father.reject(e.message);
     }
     return this;
 }
@@ -50,7 +50,14 @@ Father.prototype.then = function (cb) {
 };
 
 Father.prototype.catch = function (cb) {
-    this.onCatch = cb;
+    switch (this.status) {
+        case Father.STATUSES.PENDING:
+            this.onCatch = cb;
+            break;
+        default:
+            cb(this.cause);
+            break;
+    }
     return this;
 };
 
@@ -78,7 +85,7 @@ Father._isIterable = function (obj) {
 Father.all = function (pros) {
     //check iterability of pros
     if (!Father._isIterable(pros)){
-        throw new Error('Father.all acceps an Iterable Promise only');
+        return Father.reject('Father.all acceps an Iterable Promise only');
     }
     var results = [],
         l = pros.length,
@@ -90,7 +97,7 @@ Father.all = function (pros) {
                 solN++;
                 results[i] = v;
                 solN == l && resolve(results);
-            }, reject);
+            }).catch(reject);
         });
     });
 };
@@ -98,7 +105,7 @@ Father.all = function (pros) {
 Father.race = function (pros) {
     //check iterability of pros
     if (!Father._isIterable(pros)) {
-        throw new Error('Father.race acceps an Iterable Promise only');
+        return Father.reject('Father.race acceps an Iterable Promise only');
     }
     return new Father(function (resolve, reject) {
         pros.forEach(pro => pro.then(resolve).catch(reject));
@@ -106,7 +113,7 @@ Father.race = function (pros) {
 };
 
 Father.reject = function (cause) {
-    return new Father(function (s, r) {r(cause);});
+    return new Father(function (s, r) {return r(cause);});
 };
 
 Father.resolve = function (mix) {
