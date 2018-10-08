@@ -68,6 +68,13 @@ describe('Solving', function () {
             });
             let check = 0;
 
+            /**
+             * then does not makes almost sense implemented like that
+             * 
+             * I need to go in https://promisesaplus.com/
+             * 
+             * btw the chain method allows chains
+             */
             resolvingPromise.then((result) => {
                 assert.equal(check++, 0);
                 assert.equal(result, RESULTS.STRING);
