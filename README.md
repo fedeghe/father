@@ -48,11 +48,7 @@ fail a promise:
 const p = new Balle((res, rej) => {
     var err = 'Ups... something went wrong';
     setTimeout(() => {
-        if (Math.random() > .5) {
-            rej(err)
-        } else {
-            throw err;
-        }
+        rej(err);
     }, 1000);
 });
 p.then(() => {
