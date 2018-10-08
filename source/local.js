@@ -82,3 +82,34 @@ var Balle = require('./index.js');
         console.log('----------');
     });
 }
+
+
+{
+    Balle.chain([
+        () => {
+            return Balle.one((res, rej) => {
+                setTimeout(() => {
+                    res(100)
+                }, 100);
+            })
+        },
+        (r) => {
+            return Balle.one((res, rej) => {
+                setTimeout(() => {
+                    res(101 + r)
+                }, 200);
+            })
+        },
+        (r) => {
+            return Balle.one((res, rej) => {
+                setTimeout(() => {
+                    res(102 + r)
+                }, 300);
+            })
+        }
+    ]).then((r) =>{
+        console.log('result : '+ r)
+    }).finally(() => {
+        console.log('----------');
+    });
+}

@@ -83,6 +83,23 @@ Balle._isIterable = function (obj) {
 // factory
 Balle.one = function (exec) { return new Balle(exec); };
 
+Balle.chain = function (pros) {
+    //check iterability of pros
+    if (!Balle._isIterable(pros)) {
+        return Balle.reject('Balle.chain acceps an Iterable Promise only');
+    }
+    const l  = pros.length;
+    return new Balle((res, rej) => {
+        (function chain(index, r) {
+            return index == l
+            ? res(r)
+            : pros[index](r).then((r) => {
+                chain(++index, r);
+            });
+        })(0);
+    });
+};
+
 Balle.all = function (pros) {
     //check iterability of pros
     if (!Balle._isIterable(pros)){

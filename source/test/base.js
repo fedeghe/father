@@ -5,7 +5,8 @@ var RESULTS = {
     STRING: 'promise resolved',
     CAUSE: 'this is the cause',
     ALL_NOT_ITERABLE: 'Balle.all acceps an Iterable Promise only',
-    RACE_NOT_ITERABLE: 'Balle.race acceps an Iterable Promise only'
+    RACE_NOT_ITERABLE: 'Balle.race acceps an Iterable Promise only',
+    CHAIN_NOT_ITERABLE: 'Balle.chain acceps an Iterable Promise only'
 };
 
 
@@ -217,6 +218,49 @@ describe('Static section', function () {
         });
     });
 
+    describe('Balle.chain', function () {
+        it('solve the chain as expected', (done) => {
+            Balle.chain([
+                () => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            res(100)
+                        }, 100);
+                    })
+                },
+                (r) => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            res(101 + r)
+                        }, 200);
+                    })
+                },
+                (r) => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            res(102 + r)
+                        }, 300);
+                    })
+                }
+            ]).then((res) => {
+                assert.equal(res, 303);
+            }).finally(() => {
+                done();
+            });
+        });
+        it('does not solves all cause not iterable', (done) => {
+            Balle.chain({}).catch(function (cause) {
+                assert.equal(cause, RESULTS.CHAIN_NOT_ITERABLE);
+                done();
+            }).then(function (res) {
+                throw 'This will not run';
+            }).finally(function (res) {// done();
+                // FINALLY could break
+                assert.equal(res, RESULTS.CHAIN_NOT_ITERABLE);
+            });
+        });
+    })
+
     describe('Balle.race', function () {
         it('the right winner', (done) => {
             Balle.race([
@@ -280,6 +324,11 @@ describe('Static section', function () {
             });
         });
     });
+
+
+
+
+
 
     describe('Balle.reject', function () {
         it('rejects as expected', (done) => {
