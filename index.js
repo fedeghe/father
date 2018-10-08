@@ -43,7 +43,6 @@ Balle.prototype.then = function (cb) {
             break;
         case Balle.STATUSES.FULFILLED:
             return cb(this.value);
-            break;
     }
     
     return this;
@@ -56,7 +55,6 @@ Balle.prototype.catch = function (cb) {
             break;
         default:
             return cb(this.cause);
-            break;
     }
     return this;
 };

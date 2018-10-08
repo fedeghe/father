@@ -334,7 +334,7 @@ describe('Static section', function () {
             });
         });
         it('not a function passed to constructor', (done) => {
-            new Balle('not null but not a function')
+            Balle.one('not null but not a function')
             .then(function (res) {
                 throw 'This will not run';
             }).catch(function (message) {
