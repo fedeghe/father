@@ -3,5 +3,6 @@
         "mkdir -p test"
     ],
     "source/test/*.js": "test -plugins=malta-mocha",
-    "source/index.js": ". -plugins=malta-mocha"
+    "source/index.js": ". -plugins=malta-mocha",
+    "source/local.js": "."
 }
