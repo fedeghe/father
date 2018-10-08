@@ -36,13 +36,13 @@ function Balle(executor) {
     return this;
 }
 
-Balle.prototype.then = function (cb) {
+Balle.prototype.then = function (cb) {    
     switch (this.status) {
         case Balle.STATUSES.PENDING:
             this.thens.push(cb);
             break;
         case Balle.STATUSES.FULFILLED:
-            cb(this.value);
+            return cb(this.value);
             break;
     }
     
@@ -55,7 +55,7 @@ Balle.prototype.catch = function (cb) {
             this.onCatch = cb;
             break;
         default:
-            cb(this.cause);
+            return cb(this.cause);
             break;
     }
     return this;
@@ -113,6 +113,13 @@ Balle.race = function (pros) {
     return new Balle(function (resolve, reject) {
         pros.forEach(pro => pro.then(resolve).catch(reject));
     });
+};
+
+Balle.chain = function (pros) {
+    //check iterability of pros
+    if (!Balle._isIterable(pros)) {
+        return Balle.reject('Balle.chain acceps an Iterable Promise only');
+    }
 };
 
 Balle.reject = function (cause) {
