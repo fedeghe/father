@@ -45,7 +45,7 @@ describe('Solving', function () {
             });
         });
 
-        it('resolve asynch and exec finally', (done) => {
+        it('resolve asynch and check the finally', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
                     resolve(RESULTS.STRING);
@@ -59,6 +59,61 @@ describe('Solving', function () {
             });
         });
 
+        it('go forward with then', (done) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
+                setTimeout(function () {
+                    resolve(RESULTS.STRING);
+                }, 100);
+            });
+            let check = 0;
+
+            resolvingPromise.then((result) => {
+                assert.equal(check++, 0);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 1);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 2);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 3);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 4);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 5);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 6);
+                assert.equal(result, RESULTS.STRING);
+            }).then((result) => {
+                assert.equal(check++, 7);
+                assert.equal(result, RESULTS.STRING);
+            }).finally(function (result) {
+                assert.equal(check, 8);
+                done();
+            });
+        });
+
+        it('go forward with catch & finally', (done) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
+                setTimeout(function () {
+                    reject(RESULTS.CAUSE);
+                }, 100);
+            });
+            let check = 0;
+            resolvingPromise.then(() => {
+                throw 'Never executed';
+            }).catch((cause) => {
+                assert.equal(check++, 0);
+                assert.equal(cause, RESULTS.CAUSE);
+            }).finally(function (cause) {
+                assert.equal(check, 1);
+                done();
+            });
+        });
     });
 });
 

@@ -7,18 +7,16 @@ I tried to investigate a bit in the Promise implemetation, and this is the resul
 
 ### test
 
-Install all dev-deps
+Install, build and test
 
 ```
-npm i
-```
+> npm i
 
-the test with  
+> npm run build
+
+> npm test
 
 ```
-npm test
-```
-
 
 
 ### usage
