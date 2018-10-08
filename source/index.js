@@ -115,13 +115,6 @@ Balle.race = function (pros) {
     });
 };
 
-Balle.chain = function (pros) {
-    //check iterability of pros
-    if (!Balle._isIterable(pros)) {
-        return Balle.reject('Balle.chain acceps an Iterable Promise only');
-    }
-};
-
 Balle.reject = function (cause) {
     return new Balle(function (s, r) {return r(cause);});
 };
