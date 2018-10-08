@@ -8,7 +8,7 @@ function Balle(executor) {
     this.status = Balle.STATUSES.PENDING;
     this.value = undefined;
     this.cause = undefined;
-    this.thens = [];
+    this.resolvers = [];
     this.onCatch = undefined;
     this.onFinally = undefined;
     executor = executor || function () {};
@@ -18,7 +18,7 @@ function Balle(executor) {
             done = true;
             self.status = Balle.STATUSES.FULFILLED;
             self.value = value;
-            self.thens.forEach(function (then) {
+            self.resolvers.forEach(function (then) {
                 then(self.value);
             }, self);
             Balle._isFunc(self.onFinally) && self.onFinally(self.value)
@@ -39,7 +39,7 @@ function Balle(executor) {
 Balle.prototype.then = function (cb) {    
     switch (this.status) {
         case Balle.STATUSES.PENDING:
-            this.thens.push(cb);
+            this.resolvers.push(cb);
             break;
         case Balle.STATUSES.FULFILLED:
             return cb(this.value);
