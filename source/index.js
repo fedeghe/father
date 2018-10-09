@@ -141,6 +141,4 @@ Balle.resolve = function (mix) {
         : new Balle(function (s, r) { s(mix); });
 };
 
-if (typeof module !== 'undefined'){
-    module.exports = Balle;
-}
+typeof module !== 'undefined' && (module.exports = Balle);
