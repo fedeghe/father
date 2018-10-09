@@ -1,6 +1,7 @@
 var Balle = require('./index.js');
 
-{
+setTimeout(()=> {
+    console.log('--- START #1 ---');
     const p = new Balle((res, rej) => {
         var before = +new Date;
         setTimeout(() => {
@@ -16,11 +17,12 @@ var Balle = require('./index.js');
         // get the result in case on resolution or the cause in case of rejection|error
         console.log('executed regardless the resolution or rejection');
         console.log(res);
-        console.log('----------');
+        console.log('--- END #1 ---');
     });
-}
+}, 0);
 
-{
+setTimeout(() => {
+    console.log('--- START #2 ---');
     const p = new Balle((res, rej) => {
         setTimeout(() => {
             rej('Ups... something went wrong, as expected!')
@@ -32,84 +34,134 @@ var Balle = require('./index.js');
         // this will in any case here
         console.log(cause);
     }).finally(() => {
-        console.log('----------');
+        console.log('--- END #2 ---');
     });
-}
+}, 2000 * 1.1);
 
-{
-    const init = +new Date;
+setTimeout(() => {
+    console.log('--- START #3 ---');
+    const init = +new Date,
+        r1 = Math.random() * 1E3,
+        r2 = Math.random() * 1E3,
+        r3 = Math.random() * 1E3;
+
     const p = Balle.all([
         Balle.one((res, rej) => {
-            setTimeout(() => { res(500) }, 1000);
+            setTimeout(() => {
+                Math.random() > .9
+                    ? rej('a problem occurred at #1')
+                    : res(1);
+            }, r1);
         }),
         Balle.one((res, rej) => {
-            setTimeout(() => { res(200) }, 2000);
+            setTimeout(() => {
+                Math.random() > .9
+                    ? rej('a problem occurred at #3')
+                    : res(2);
+            }, r2);
         }),
         Balle.one((res, rej) => {
-            setTimeout(() => { res(300) }, 1500);
+            setTimeout(() => {
+                Math.random() > .9
+                    ? rej('a problem occurred at #3')
+                    : res(3);
+            }, r3);
         }),
-    ]);
-    p.then((result) => {
-        console.log((+new Date - init) + ' ≈ 2000');
-        console.log(result); //[500, 200, 300]
-    }).catch((cause) => {
-        throw 'never thrown';
-    }).finally(() => {
-        console.log('----------');
+    ])
+    .then((result) => {
+        console.log('time: ' + (+new Date - init) + 'ms');
+        console.log('result: ' + result);
+    })
+    .catch((cause) => {
+        console.log('Something went wrong cause ' + cause);
+    })
+    .finally(() => {
+        console.log('--- END #3 ---');
     });
 
-}
+}, 3000 * 1.1);
 
-{
-    const init = +new Date;
+
+setTimeout(() => {
+    console.log('--- START #4 ---');
+    const init = +new Date,
+        r1 = Math.random() * 1E3,
+        r2 = Math.random() * 1E3,
+        r3 = Math.random() * 1E3;
     const p = Balle.race([
         Balle.one((res, rej) => {
-            setTimeout(() => { res(500) }, 1000);
+            setTimeout(() => {
+                Math.random() > .5
+                    ? rej('a problem occurred at #1')
+                    : res(100);
+            }, r1);
         }),
         Balle.one((res, rej) => {
-            setTimeout(() => { res(200) }, 1500);
+            setTimeout(() => {
+                Math.random() > .5
+                    ? rej('a problem occurred at #2')
+                    : res(200);
+            }, r2);
         }),
         Balle.one((res, rej) => {
-            setTimeout(() => { res(300) }, 2000);
+            setTimeout(() => {
+                Math.random() > .5
+                    ? rej('a problem occurred at #3')
+                    : res(300);
+            }, r3);
         }),
-    ]);
-    p.then((result) => {
-        console.log((+new Date - init) + ' ≈ 1000');
-        console.log(result + ' == 500'); //[]
-    }).catch((cause) => {
-        throw 'never thrown';
-    }).finally(() => {
-        console.log('----------');
+    ])
+    .then((result) => {
+        console.log('time: ' + (+new Date - init) + 'ms');
+        console.log('result: ' + result);
+    })
+    .catch((cause) => {
+        console.log('Something went wrong cause ' + cause)
+    })
+    .finally(() => {
+        console.log('--- END #4 ---');
     });
-}
+}, 4000 * 1.1);
 
 
-{
+setTimeout(() => {
+    console.log('--- START #5 ---');
     Balle.chain([
         () => {
-            return Balle.one((res, rej) => {
+            return Balle.one((resolve, reject) => {
                 setTimeout(() => {
-                    res(100)
+                    Math.random() > .8
+                        ? reject('a problem occurred at #1')
+                        : resolve(100)
                 }, 100);
             })
         },
         (r) => {
-            return Balle.one((res, rej) => {
+            return Balle.one((resolve, reject) => {
                 setTimeout(() => {
-                    res(101 + r)
+                    Math.random() > .8
+                        ? reject('a problem occurred at #2')
+                        : resolve(101 + r)
                 }, 200);
             })
         },
         (r) => {
-            return Balle.one((res, rej) => {
+            return Balle.one((resolve, reject) => {
                 setTimeout(() => {
-                    res(102 + r)
+                    Math.random() > .8
+                        ? reject('a problem occurred at #3')
+                        : resolve(102 + r)
                 }, 300);
             })
         }
-    ]).then((r) =>{
-        console.log('result : '+ r)
-    }).finally(() => {
-        console.log('----------');
+    ])
+    .then((r) => {
+        console.log('All good for the chain : ' + r)
+    })
+    .catch((cause) => {
+        console.log('Something went wrong cause ' + cause)
+    })
+    .finally(() => {
+        console.log('--- END #5 ---');
     });
-}
+}, 5000 * 1.1);
