@@ -12,9 +12,9 @@
 
 
 # WTF ?
-No... the world does not need that shit but I need to try to understand
+No... the world does not need that shit but I need to try to understand.
 
-**Just to be clear, this implemetation has <u>nothing</u> to do with [A+ promise specs](https://promisesaplus.com/)**
+**Just to be clear, this implementation has <u>nothing</u> to do with [A+ promise specs](https://promisesaplus.com/)**
 
 ---
 
