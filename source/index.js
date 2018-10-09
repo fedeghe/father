@@ -1,7 +1,3 @@
-/**
- * 
- * @param {*} executor 
- */
 function Balle(executor) {
     var self = this,
         done = false;
@@ -11,8 +7,6 @@ function Balle(executor) {
     this.resolvers = [];
     this.rejectors = [];
     this.finalizers = [];
-    // this.onCatch = undefined;
-    // this.onFinally = undefined;
     executor = executor || function () {};
     try {
         executor(function ___SOLVER(value) {
@@ -23,7 +17,6 @@ function Balle(executor) {
             self.resolvers.forEach(function (then) {
                 then(self.value);
             }, self);
-            // Balle._isFunc(self.onFinally) && self.onFinally(self.value)
             self.finalizers.forEach(function (finalize) {
                 finalize(self.value);
             }, self);
@@ -32,11 +25,9 @@ function Balle(executor) {
             done = true;
             self.status = Balle.STATUSES.REJECTED;
             self.cause = cause;
-            // Balle._isFunc(self.onCatch) && self.onCatch(self.cause);
             self.rejectors.forEach(function (rejector) {
                 rejector(self.cause);
             }, self);
-            // Balle._isFunc(self.onFinally) && self.onFinally(self.cause);
             self.finalizers.forEach(function (finalize) {
                 finalize(self.cause);
             }, self);
@@ -62,7 +53,6 @@ Balle.prototype.then = function (res, rej) {
 Balle.prototype.catch = function (rej) {
     switch (this.status) {
         case Balle.STATUSES.PENDING:
-            // this.onCatch = cb;
             this.rejectors.push(rej);
             break;
         default:
@@ -73,7 +63,6 @@ Balle.prototype.catch = function (rej) {
 
 Balle.prototype.finally = function (cb) {
     this.finalizers.push(cb);
-    // this.onFinally = cb;
     return this;
 };
 
@@ -105,7 +94,7 @@ Balle.all = function (pros) {
         solN = 0;
 
     return new Balle(function (resolve, reject) {
-        pros.forEach((pro, i) => {
+        pros.forEach(function (pro, i) {
             pro.then(function (v) {
                 solN++;
                 results[i] = v;
@@ -120,7 +109,7 @@ Balle.race = function (pros) {
         return Balle.reject('Balle.race acceps an Iterable Promise only');
     }
     return new Balle(function (resolve, reject) {
-        pros.forEach(pro => pro.then(resolve).catch(reject));
+        pros.forEach(function (pro){ pro.then(resolve).catch(reject)});
     });
 };
 
@@ -129,29 +118,30 @@ Balle.chain = function (pros) {
         return Balle.reject('Balle.chain acceps an Iterable Promise only');
     }
     const l  = pros.length;
-    return new Balle((res, rej) => {
+    return new Balle(function (res, rej) {
         (function chain(index, r) {
             return index == l
             ? res(r)
-            : pros[index](r).then((r) => {
-                chain(++index, r);
-            }).catch((r) => {
-                rej(r);
-            });
+            : pros[index](r)
+                .then(function (r) {
+                    chain(++index, r);
+                }).catch(function (r) {
+                    rej(r);
+                });
         })(0);
     });
 };
 
 Balle.reject = function (cause) {
-    return new Balle(function (s, r) {return r(cause);});
+    return new Balle(function (s, r) { return r(cause); });
 };
 
 Balle.resolve = function (mix) {
-    return mix instanceof Balle
-        ? new Balle(function (resolve, reject) {
-            mix.then(resolve).catch(reject);
-        })
-        : new Balle(function (s, r) { s(mix); });
+    return new Balle(function (res, rej) {
+        mix instanceof Balle
+        ? mix.then(res).catch(rej)
+        : res(mix);
+    });
 };
 
 typeof module !== 'undefined' && (module.exports = Balle);
