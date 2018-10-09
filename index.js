@@ -83,24 +83,6 @@ Balle._isIterable = function (obj) {
 // factory
 Balle.one = function (exec) { return new Balle(exec); };
 
-Balle.chain = function (pros) {
-    if (!Balle._isIterable(pros)) {
-        return Balle.reject('Balle.chain acceps an Iterable Promise only');
-    }
-    const l  = pros.length;
-    return new Balle((res, rej) => {
-        (function chain(index, r) {
-            return index == l
-            ? res(r)
-            : pros[index](r).then((r) => {
-                chain(++index, r);
-            }).catch((r) => {
-                rej(r);
-            });
-        })(0);
-    });
-};
-
 Balle.all = function (pros) {
     if (!Balle._isIterable(pros)){
         return Balle.reject('Balle.all acceps an Iterable Promise only');
@@ -126,6 +108,24 @@ Balle.race = function (pros) {
     }
     return new Balle(function (resolve, reject) {
         pros.forEach(pro => pro.then(resolve).catch(reject));
+    });
+};
+
+Balle.chain = function (pros) {
+    if (!Balle._isIterable(pros)) {
+        return Balle.reject('Balle.chain acceps an Iterable Promise only');
+    }
+    const l  = pros.length;
+    return new Balle((res, rej) => {
+        (function chain(index, r) {
+            return index == l
+            ? res(r)
+            : pros[index](r).then((r) => {
+                chain(++index, r);
+            }).catch((r) => {
+                rej(r);
+            });
+        })(0);
     });
 };
 

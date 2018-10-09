@@ -73,7 +73,7 @@ const p = new Balle((resolve, reject) => {
 });
 ```
 
-Balle.one
+**Balle.one**
 ``` js
 // wraps the constructor call
 const p1 = new Balle(/* executor func */);
@@ -81,7 +81,7 @@ const p1 = new Balle(/* executor func */);
 const p1 = Balle.one(/* executor func */);
 ```
 
-Balle.all: 
+**Balle.all**  
 ``` js
 const init = +new Date;
 const p = Balle.all([
@@ -104,7 +104,7 @@ const p = Balle.all([
 });
 ```
 
-Balle.race: 
+**Balle.race** 
 ``` js
 const init = +new Date;
 const p = Balle.race([
@@ -127,7 +127,7 @@ const p = Balle.race([
 });
 ```
 
-Balle.chain: 
+**Balle.chain** 
 ``` js
 Balle.chain([
     () => {
@@ -168,5 +168,3 @@ Balle.chain([
     console.log('----------');
 });
 ```
-
-

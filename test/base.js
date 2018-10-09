@@ -22,6 +22,7 @@ describe('Solving', function () {
             assert.equal(resolvingPromise.status, Balle.STATUSES.FULFILLED);
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
+        
         it('resolve straigth and then', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
@@ -99,7 +100,6 @@ describe('Solving', function () {
 
 describe('Rejection', function () {
     describe('basic reject', function () {
-
         it('reject straigth', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 reject(RESULTS.STRING);
@@ -108,6 +108,7 @@ describe('Rejection', function () {
             assert.equal(resolvingPromise.status, Balle.STATUSES.REJECTED);
             assert.equal(resolvingPromise.value, undefined);
         });
+
         it('reject asynch ', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
@@ -125,10 +126,8 @@ describe('Rejection', function () {
                 done();
             });
         });
-
     });
 });
-
 
 describe('Static section', function () {
     describe('Balle.all', function () {
@@ -157,6 +156,7 @@ describe('Static section', function () {
                 done();
             });
         });
+
         it('solves all the promises but one', (done) => {
             Balle.all([
                 new Balle(function (resolve, reject) {
@@ -184,6 +184,7 @@ describe('Static section', function () {
                 assert.equal(res, RESULTS.CAUSE);
             });
         });
+
         it('does not solves all cause not iterable', (done) => {
             Balle.all({}).catch(function (cause) {
                 assert.equal(cause, RESULTS.ALL_NOT_ITERABLE);
@@ -226,6 +227,7 @@ describe('Static section', function () {
                 done();
             });
         });
+
         it('reject the chain as expected', (done) => {
             Balle.chain([
                 () => {
@@ -256,6 +258,7 @@ describe('Static section', function () {
                 done();
             });
         });
+
         it('does not solves all cause not iterable', (done) => {
             Balle.chain({}).catch(function (cause) {
                 assert.equal(cause, RESULTS.CHAIN_NOT_ITERABLE);
@@ -333,11 +336,6 @@ describe('Static section', function () {
         });
     });
 
-
-
-
-
-
     describe('Balle.reject', function () {
         it('rejects as expected', (done) => {
             Balle.reject(RESULTS.CAUSE).catch(function (cause) {
@@ -379,6 +377,7 @@ describe('Static section', function () {
             });
         });
     });
+
     describe('Some edge cases', function () {
         it('try to reject a solved one', (done) => {
             var p = new Balle(function (resolve, reject) {
@@ -401,8 +400,6 @@ describe('Static section', function () {
         });
     });
 
-
-
     describe('utilities', function () {
         it('isFunc', () => {
             assert.equal(Balle._isFunc(function () {}), true);
@@ -420,7 +417,5 @@ describe('Static section', function () {
             assert.equal(Balle._isIterable([1, 2, 3, 4, 5]), true);
         });
     });
-    
-
 
 });
