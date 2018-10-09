@@ -84,7 +84,6 @@ Balle._isIterable = function (obj) {
 Balle.one = function (exec) { return new Balle(exec); };
 
 Balle.chain = function (pros) {
-    //check iterability of pros
     if (!Balle._isIterable(pros)) {
         return Balle.reject('Balle.chain acceps an Iterable Promise only');
     }
@@ -95,13 +94,14 @@ Balle.chain = function (pros) {
             ? res(r)
             : pros[index](r).then((r) => {
                 chain(++index, r);
+            }).catch((r) => {
+                rej(r);
             });
         })(0);
     });
 };
 
 Balle.all = function (pros) {
-    //check iterability of pros
     if (!Balle._isIterable(pros)){
         return Balle.reject('Balle.all acceps an Iterable Promise only');
     }
@@ -121,7 +121,6 @@ Balle.all = function (pros) {
 };
 
 Balle.race = function (pros) {
-    //check iterability of pros
     if (!Balle._isIterable(pros)) {
         return Balle.reject('Balle.race acceps an Iterable Promise only');
     }

@@ -60,47 +60,19 @@ describe('Solving', function () {
             });
         });
 
-        it('go forward with then', (done) => {
+        it('consume it then', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
                     resolve(RESULTS.STRING);
                 }, 100);
             });
-            let check = 0;
-
             /**
-             * then does not makes almost sense implemented like that
-             * 
-             * I need to go in https://promisesaplus.com/
-             * 
-             * btw the chain method allows chains
+             * as u can see then has nothing to do with https://promisesaplus.com/
              */
             resolvingPromise.then((result) => {
-                assert.equal(check++, 0);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 1);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 2);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 3);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 4);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 5);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 6);
-                assert.equal(result, RESULTS.STRING);
-            }).then((result) => {
-                assert.equal(check++, 7);
                 assert.equal(result, RESULTS.STRING);
             }).finally(function (result) {
-                assert.equal(check, 8);
+                assert.equal(result, RESULTS.STRING);
                 done();
             });
         });
