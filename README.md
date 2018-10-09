@@ -6,6 +6,8 @@
 
 I tried to investigate a bit in the Promise implemetation, and this is the result. 
 
+**Just to be clear, this implemetation has <u>nothing</u> to do with [A+ promise specs](https://promisesaplus.com/)**
+
 ### test
 
 Install, build and test
@@ -25,35 +27,47 @@ Install, build and test
 Make a promise :
 
 ``` js
-const p = new Balle((res, rej) => {
+const p = new Balle((resolve, reject) => {
     var before = +new Date;
     setTimeout(() => {
-        // let's say it solve
-        res([before, +new Date]);
+        Math.random() > .5
+        ? resolve([before, +new Date])
+        : reject('that`s the cause');
     }, 2000);
-});
+})
 
-p.then((result) => {
+// deal with success using then
+.then((result) => {
     console.log(result);
-}).finally((result) => {
+})
+
+// deal with rejection | thrown error using catch
+.catch((whatever) => {
+    console.log('Failure:');
+    console.log(whatever);
+})
+
+// do something anyway
+.finally((result_cause_error) => {
     // get the result in case on resolution or the cause
     // in case of rejection|error
     console.log('Executed regardless the resolution or rejection')
 });
 ```
 
-fail a promise: 
+reject a promise: 
 
 ``` js
-const p = new Balle((res, rej) => {
+const p = new Balle((resolve, reject) => {
     var err = 'Ups... something went wrong';
     setTimeout(() => {
-        rej(err);
+        reject(err);
     }, 1000);
-});
-p.then(() => {
+})
+.then(() => {
     throw 'never thrown';
-}).catch((cause) => {
+})
+.catch((cause) => {
     // this will in any case here
     console.log(cause);
 });
@@ -71,20 +85,21 @@ Balle.all:
 ``` js
 const init = +new Date;
 const p = Balle.all([
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(500) }, 1000);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(500) }, 1000);
     }),
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(200) }, 2000);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(200) }, 2000); // +++
     }),
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(300) }, 1500);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(300) }, 1500);
     }),
-]);
-p.then((result) => {
+])
+.then((result) => {
     console.log((+new Date - init)+ ' ≈ 2000');
-    console.log(result); //[500, 200, 300]
-}).catch((cause) => {
+    console.log(result); // ---> [500, 200, 300]
+})
+.catch((cause) => {
     throw 'never thrown';
 });
 ```
@@ -93,20 +108,21 @@ Balle.race:
 ``` js
 const init = +new Date;
 const p = Balle.race([
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(500) }, 1000);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(500) }, 1000); // +++ 
     }),
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(200) }, 1500);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(200) }, 1500);
     }),
-    Balle.one((res, rej) => {
-        setTimeout(() => { res(300) }, 2000);
+    Balle.one((resolve, reject) => {
+        setTimeout(() => { resolve(300) }, 2000);
     }),
-]);
-p.then((result) => {
+])
+.then((result) => {
     console.log((+new Date - init) + ' ≈ 1000');
-    console.log(result + ' == 500'); //[]
-}).catch((cause) => {
+    console.log(result + ' == 500'); 
+})
+.catch((cause) => {
     throw 'never thrown';
 });
 ```
@@ -115,29 +131,40 @@ Balle.chain:
 ``` js
 Balle.chain([
     () => {
-        return Balle.one((res, rej) => {
+        return Balle.one((resolve, reject) => {
             setTimeout(() => {
-                res(100)
+                Math.random() > .5
+                ? reject('a problem occurred at #1')
+                : resolve(100)
             }, 100);
         })
     },
     (r) => {
-        return Balle.one((res, rej) => {
+        return Balle.one((resolve, reject) => {
             setTimeout(() => {
-                res(101 + r)
+                Math.random() > .5
+                ? reject('a problem occurred at #2')
+                : resolve(101 + r)
             }, 200);
         })
     },
     (r) => {
-        return Balle.one((res, rej) => {
+        return Balle.one((resolve, reject) => {
             setTimeout(() => {
-                res(102 + r)
+                Math.random() > .5
+                ? reject('a problem occurred at #3')
+                : resolve(102 + r)
             }, 300);
         })
     }
-]).then((r) =>{
+])
+.then((r) =>{
     console.log('result : '+ r)
-}).finally(() => {
+})
+.catch((cause)=>{
+    console.log('cause : '+ cause)
+})
+.finally(() => {
     console.log('----------');
 });
 ```
