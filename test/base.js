@@ -77,6 +77,7 @@ describe('Solving', function () {
                 done();
             });
         });
+
         it('catch from then ', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(function () {
@@ -86,7 +87,7 @@ describe('Solving', function () {
             /**
              * as u can see then has nothing to do with https://promisesaplus.com/
              */
-            resolvingPromise.then((result) => {
+            resolvingPromise.then(() => {
                 throw 'Never executed';
             }, (cause) => {
                 assert.equal(cause, RESULTS.CAUSE);
