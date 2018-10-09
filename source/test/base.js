@@ -223,7 +223,36 @@ describe('Static section', function () {
                 }
             ]).then((res) => {
                 assert.equal(res, 303);
-            }).finally(() => {
+                done();
+            });
+        });
+        it('reject the chain as expected', (done) => {
+            Balle.chain([
+                () => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            res(100)
+                        }, 100);
+                    })
+                },
+                (r) => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            res(101 + r)
+                        }, 200);
+                    })
+                },
+                (r) => {
+                    return Balle.one((res, rej) => {
+                        setTimeout(() => {
+                            rej('an error occurred handling the given value: ' + r);
+                        }, 300);
+                    })
+                }
+            ]).then((res) => {
+                throw 'This will not run';
+            }).catch((cause) => {
+                assert.equal(cause, 'an error occurred handling the given value: 201');
                 done();
             });
         });
