@@ -4,8 +4,9 @@
   "description": "Simple promise implementation",
   "main": "index.js",
   "scripts": {
-    "buildev": "malta buildev.json",
-    "build": "malta buildtr.json",
+    "buildev": "malta source/buildev.json",
+    "build": "malta source/buildtr.json",
+    "clean": "malta source/clean.json",
     "test": "mocha",
     "cover": "istanbul cover _mocha",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"

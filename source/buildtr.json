@@ -1,0 +1,7 @@
+{
+    "EXE": [
+        "mkdir -p test"
+    ],
+    "#source/test/*.js": "test",
+    "#source/index.js": ". -plugins=malta-millijs...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
+}

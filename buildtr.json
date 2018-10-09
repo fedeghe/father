@@ -1,7 +1,0 @@
-{
-    "EXE": [
-        "mkdir -p test"
-    ],
-    "#source/test/*.js": "test",
-    "#source/index.js": ". -plugins=malta-millijs"
-}

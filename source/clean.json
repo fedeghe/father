@@ -1,0 +1,8 @@
+{
+    "EXE": [
+        "rm -rf test",
+        "rm -rf node_modules",
+        "rm -rf coverage",
+        "rm -f index.js"
+    ]
+}
