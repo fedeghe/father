@@ -1,26 +1,44 @@
 [![Coverage Status](https://coveralls.io/repos/github/fedeghe/balle/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/balle?branch=master)
 [![Build Status](https://travis-ci.org/fedeghe/balle.svg?branch=master)](https://travis-ci.org/fedeghe/balle)
 
+<pre>
+     ...     ..                        ..       ..
+  .=*8888x <"?88h.               x .d88"  x .d88"
+ X>  '8888H> '8888                5888R    5888R
+'88h. `8888   8888         u      '888R    '888R        .u
+'8888 '8888    "88>     us888u.    888R     888R     ud8888.
+ `888 '8888.xH888x.  .@88 "8888"   888R     888R   :888'8888.
+   X" :88*~  `*8888> 9888  9888    888R     888R   d888 '88%"
+ ~"   !"`      "888> 9888  9888    888R     888R   8888.+"
+  .H8888h.      ?88  9888  9888    888R     888R   8888L
+ :"^"88888h.    '!   9888  9888   .888B .  .888B . '8888c. .+
+ ^    "88888hx.+"    "888*""888"  ^*888%   ^*888%   "88888%
+        ^"**""        ^Y"   ^Y'     "%       "%       "YP'
+                                                            v. 1.0.5
+...  I promise
+</pre>
 
-# Balle ... I promise  
 
-I tried to investigate a bit in the Promise implemetation, and this is the result. 
+# WTF ?
+No... the world does not need that shit but I need to try to understand
 
 **Just to be clear, this implemetation has <u>nothing</u> to do with [A+ promise specs](https://promisesaplus.com/)**
 
-### test
+---
 
-Install, build and test
+### install, build and test
 
 ```
 > npm i
 
 > npm run build
 
-> npm test
+> npm test 
+// OR
+> npm run cover
 
 ```
-
+---
 
 ### usage
 
@@ -168,3 +186,6 @@ Balle.chain([
     console.log('----------');
 });
 ```
+---
+federico.ghedina@gmail.com  
+last build : 9/10/2018
