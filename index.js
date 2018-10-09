@@ -9,8 +9,10 @@ function Balle(executor) {
     this.value = undefined;
     this.cause = undefined;
     this.resolvers = [];
-    this.onCatch = undefined;
-    this.onFinally = undefined;
+    this.rejectors = [];
+    this.finalizers = [];
+    // this.onCatch = undefined;
+    // this.onFinally = undefined;
     executor = executor || function () {};
     try {
         executor(function ___SOLVER(value) {
@@ -21,14 +23,23 @@ function Balle(executor) {
             self.resolvers.forEach(function (then) {
                 then(self.value);
             }, self);
-            Balle._isFunc(self.onFinally) && self.onFinally(self.value)
+            // Balle._isFunc(self.onFinally) && self.onFinally(self.value)
+            self.finalizers.forEach(function (finalize) {
+                finalize(self.value);
+            }, self);
         }, function ___REJECTOR(cause) {
             if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
             self.status = Balle.STATUSES.REJECTED;
             self.cause = cause;
-            Balle._isFunc(self.onCatch) && self.onCatch(self.cause);
-            Balle._isFunc(self.onFinally) && self.onFinally(self.cause);
+            // Balle._isFunc(self.onCatch) && self.onCatch(self.cause);
+            self.rejectors.forEach(function (rejector) {
+                rejector(self.cause);
+            }, self);
+            // Balle._isFunc(self.onFinally) && self.onFinally(self.cause);
+            self.finalizers.forEach(function (finalize) {
+                finalize(self.cause);
+            }, self);
         });
     } catch(e) {
         return Balle.reject(e.message);
@@ -36,31 +47,33 @@ function Balle(executor) {
     return this;
 }
 
-Balle.prototype.then = function (cb) {    
+Balle.prototype.then = function (res, rej) {    
     switch (this.status) {
         case Balle.STATUSES.PENDING:
-            this.resolvers.push(cb);
+            this.resolvers.push(res);
+            rej && this.rejectors.push(rej);
             break;
         case Balle.STATUSES.FULFILLED:
-            return cb(this.value);
+            return res(this.value);
     }
-    
     return this;
 };
 
-Balle.prototype.catch = function (cb) {
+Balle.prototype.catch = function (rej) {
     switch (this.status) {
         case Balle.STATUSES.PENDING:
-            this.onCatch = cb;
+            // this.onCatch = cb;
+            this.rejectors.push(rej);
             break;
         default:
-            return cb(this.cause);
+            return rej(this.cause);
     }
     return this;
 };
 
 Balle.prototype.finally = function (cb) {
-    this.onFinally = cb;
+    this.finalizers.push(cb);
+    // this.onFinally = cb;
     return this;
 };
 

@@ -22,7 +22,7 @@ describe('Solving', function () {
             assert.equal(resolvingPromise.status, Balle.STATUSES.FULFILLED);
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
-        
+
         it('resolve straigth and then', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
@@ -76,6 +76,22 @@ describe('Solving', function () {
                 assert.equal(result, RESULTS.STRING);
                 done();
             });
+        });
+        it('catch from then ', (done) => {
+            const resolvingPromise = new Balle((resolve, reject) => {
+                setTimeout(function () {
+                    reject(RESULTS.CAUSE);
+                }, 100);
+            });
+            /**
+             * as u can see then has nothing to do with https://promisesaplus.com/
+             */
+            resolvingPromise.then((result) => {
+                throw 'Never executed';
+            }, (cause) => {
+                assert.equal(cause, RESULTS.CAUSE);
+                done();
+            })
         });
 
         it('go forward with catch & finally', (done) => {
