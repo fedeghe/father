@@ -4,9 +4,9 @@ function Balle(executor) {
     this.status = Balle.STATUSES.PENDING;
     this.value = undefined;
     this.cause = undefined;
-    this.resolvers = [];
-    this.rejectors = [];
-    this.finalizers = [];
+    this.resolvers = this.resolvers || [];
+    this.rejectors = this.rejectors || [];
+    this.finalizers = this.finalizers || [];
     executor = executor || function () {};
     try {
         executor(function ___SOLVER(value) {
@@ -37,6 +37,10 @@ function Balle(executor) {
     }
     return this;
 }
+
+Balle.prototype.launch = function (executor) {
+    return Balle.call(this, executor);
+};
 
 Balle.prototype.then = function (res, rej) {    
     switch (this.status) {

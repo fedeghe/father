@@ -83,6 +83,29 @@ const p = new Balle((resolve, reject) => {
 });
 ```
 
+late launch: 
+
+``` js  
+const resolvingPromise = new Balle();
+
+resolvingPromise
+.then(() => {
+    throw 'Never executed';
+})
+.catch((cause) => {
+    console.log('catched: ' + cause);
+}).finally(function (cause) {
+    console.log('finally : ' + cause);
+});
+
+resolvingPromise
+.launch((resolve, reject) => {
+    setTimeout(function () {
+        reject('a problem occurred');
+    }, 100);
+});
+```
+
 **Balle.one**
 ``` js
 // wraps the constructor call
@@ -180,4 +203,4 @@ Balle.chain([
 ```
 ---
 federico.ghedina@gmail.com  
-last build : 9/10/2018
+last build : 10/10/2018

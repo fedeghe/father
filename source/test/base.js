@@ -112,6 +112,21 @@ describe('Solving', function () {
                 done();
             });
         });
+        it('create empty one and then launch', (done) => {
+            const resolvingPromise = Balle.one();
+            var executor = (resolve, reject) => {
+                    setTimeout(function () {
+                        reject(RESULTS.CAUSE);
+                    }, 100);
+                };
+            resolvingPromise.launch(executor).then(() => {
+                throw 'Never executed';
+            }).catch((cause) => {
+                assert.equal(cause, RESULTS.CAUSE);
+            }).finally(function (cause) {
+                done();
+            });
+        });
     });
 });
 
