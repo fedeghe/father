@@ -1,5 +1,5 @@
 var Balle = require('./index.js');
-/*
+
 setTimeout(()=> {
     console.log('--- START #1 ---');
     const p = new Balle((res, rej) => {
@@ -165,11 +165,11 @@ setTimeout(() => {
         console.log('--- END #5 ---');
     });
 }, 5000 * 1.1);
-*/
+
 
 setTimeout(() => {
     console.log('--- START #6 ---');
-    
+
     const resolvingPromise = Balle.one();
 
     resolvingPromise
@@ -180,14 +180,13 @@ setTimeout(() => {
         console.log('catched');
         console.log(cause);
     }).finally(function (cause) {
-        console.log('finally');
-        console.log(cause);
+        console.log('--- END #6 ---');
     });
 
     resolvingPromise
     .launch((resolve, reject) => {
         setTimeout(function () {
-            reject('xxx');
+            reject('this is the problem');
         }, 100);
     });
 }, 6000 * 1.1);
