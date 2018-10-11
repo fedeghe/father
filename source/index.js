@@ -8,29 +8,26 @@ function Balle(executor) {
     this.rejectors = this.rejectors || [];
     this.finalizers = this.finalizers || [];
     executor = executor || function () {};
+    function roll(els, name){
+        els.forEach(function (func) {
+            func(self[name]);
+        }, self);
+    }
     try {
         executor(function ___SOLVER(value) {
             if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
             self.status = Balle.STATUSES.FULFILLED;
             self.value = value;
-            self.resolvers.forEach(function (then) {
-                then(self.value);
-            }, self);
-            self.finalizers.forEach(function (finalize) {
-                finalize(self.value);
-            }, self);
+            roll(self.resolvers, 'value');
+            roll(self.finalizers, 'value');
         }, function ___REJECTOR(cause) {
             if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
             self.status = Balle.STATUSES.REJECTED;
             self.cause = cause;
-            self.rejectors.forEach(function (rejector) {
-                rejector(self.cause);
-            }, self);
-            self.finalizers.forEach(function (finalize) {
-                finalize(self.cause);
-            }, self);
+            roll(self.rejectors, 'cause');
+            roll(self.finalizers, 'cause');
         });
     } catch(e) {
         return Balle.reject(e.message);
