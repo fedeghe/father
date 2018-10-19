@@ -106,6 +106,27 @@ resolvingPromise
 });
 ```
 
+resolve:
+``` js
+const resolvingPromise = new Balle();
+resolvingPromise.resolve('the value');
+resolvingPromise.then(function (v){
+    console.log(v === 'the value')
+});
+``` 
+
+reject: 
+``` js
+const rejectingPromise = new Balle();
+rejectingPromise.resolve('the cause');
+rejectingPromise.catch(function (v){
+    console.log(v === 'the cause')
+});
+``` 
+
+
+
+
 **Balle.one**
 ``` js
 // wraps the constructor call
@@ -203,4 +224,4 @@ Balle.chain([
 ```
 ---
 federico.ghedina@gmail.com  
-last build : 11/10/2018
+last build : 20/10/2018

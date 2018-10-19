@@ -35,6 +35,18 @@ function Balle(executor) {
     return this;
 }
 
+Balle.prototype.resolve = function (value) {
+    return Balle.call(this, function (res, rej) {
+        return res(value);
+    });
+};
+
+Balle.prototype.reject = function (value) {
+    return Balle.call(this, function (res, rej) {
+        return rej(value);
+    });
+};
+
 Balle.prototype.launch = function (executor) {
     return Balle.call(this, executor);
 };

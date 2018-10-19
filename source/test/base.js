@@ -127,6 +127,23 @@ describe('Solving', function () {
                 done();
             });
         });
+
+        it('solves straigth the instance', (done) => {
+            const resolvingPromise = Balle.one();
+            resolvingPromise.resolve('this is the value');
+            resolvingPromise.then((r) => {
+                assert.equal(r, 'this is the value');
+                done()
+            });
+        })
+        it('rejects straigth the instance', (done) => {
+            const rejectingPromise = Balle.one();
+            rejectingPromise.reject('this is the value');
+            rejectingPromise.catch((r) => {
+                assert.equal(r, 'this is the value');
+                done()
+            });
+        })
     });
 });
 
