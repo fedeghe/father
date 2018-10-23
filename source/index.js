@@ -58,7 +58,7 @@ Balle.prototype.then = function (res, rej) {
             rej && this.rejectors.push(rej);
             break;
         case Balle.STATUSES.FULFILLED:
-            return res(this.value);
+            res(this.value);
     }
     return this;
 };
@@ -111,8 +111,8 @@ Balle.all = function (pros) {
             pro.then(function (v) {
                 solN++;
                 results[i] = v;
-                solN == l && resolve(results);
-            }).catch(reject);
+                solN == l && resolve(results)
+            });
         });
     });
 };
