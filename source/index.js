@@ -118,7 +118,7 @@ Balle.all = function (pros) {
                 solN++;
                 results[i] = v;
                 solN == l && resolve(results)
-            })
+            }).catch(reject)
         });
     });
 };
