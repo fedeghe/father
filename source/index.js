@@ -8,31 +8,33 @@ function Balle(executor) {
     this.rejectors = this.rejectors || [];
     this.finalizers = this.finalizers || [];
     executor = executor || function () {};
-    function roll(els, name){
-        els.forEach(function (func) {
-            func(self[name]);
-        }, self);
-    }
+
     try {
         executor(function ___SOLVER(value) {
             if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
             self.status = Balle.STATUSES.FULFILLED;
             self.value = value;
-            roll(self.resolvers, 'value');
-            roll(self.finalizers, 'value');
+            roll(self.resolvers, 'value', self);
+            roll(self.finalizers, 'value', self);
         }, function ___REJECTOR(cause) {
             if (done || self.status !== Balle.STATUSES.PENDING) return;
             done = true;
             self.status = Balle.STATUSES.REJECTED;
             self.cause = cause;
-            roll(self.rejectors, 'cause');
-            roll(self.finalizers, 'cause');
+            roll(self.rejectors, 'cause', self);
+            roll(self.finalizers, 'cause', self);
         });
     } catch(e) {
         return Balle.reject(e.message);
     }
     return this;
+}
+
+function roll(els, name, inst) {
+    els.forEach(function (func) {
+        func(inst[name]);
+    }, inst);
 }
 
 Balle.prototype.resolve = function (value) {
@@ -53,6 +55,9 @@ Balle.prototype.launch = function (executor) {
 
 Balle.prototype.then = function (res, rej) {    
     switch (this.status) {
+        case Balle.STATUSES.REJECTED:
+            roll(this.rejectors, 'cause', this);
+            break;
         case Balle.STATUSES.PENDING:
             this.resolvers.push(res);
             rej && this.rejectors.push(rej);
@@ -68,7 +73,7 @@ Balle.prototype.catch = function (rej) {
         case Balle.STATUSES.PENDING:
             this.rejectors.push(rej);
             break;
-        default:
+        case Balle.STATUSES.REJECTED:
             return rej(this.cause);
     }
     return this;
@@ -108,11 +113,12 @@ Balle.all = function (pros) {
 
     return new Balle(function (resolve, reject) {
         pros.forEach(function (pro, i) {
+            pro.status == 'REJECTED' && reject(pro.cause);
             pro.then(function (v) {
                 solN++;
                 results[i] = v;
                 solN == l && resolve(results)
-            });
+            })
         });
     });
 };

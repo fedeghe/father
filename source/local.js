@@ -194,10 +194,11 @@ setTimeout(() => {
 
 
 var p1 = Balle.one().resolve(2),
-    p2 = Balle.one().resolve(4),
+    p2 = Balle.one().reject('u are nigger'),
     p3 = Balle.one().resolve(6);
+
 Balle.all([p1, p2, p3]).then(function (result){
     console.log('results : ', result)
 }).catch((c) => {
-    console.log('cause: ', c)
+    console.log('cause is : ', c)
 })
