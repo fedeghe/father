@@ -122,7 +122,7 @@ rejectingPromise.resolve('the cause');
 rejectingPromise.catch(function (v){
     console.log(v === 'the cause')
 });
-``` 
+```
 
 
 
@@ -224,4 +224,4 @@ Balle.chain([
 ```
 ---
 federico.ghedina@gmail.com  
-last build : 20/10/2018
+last build : 25/10/2018

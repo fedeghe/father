@@ -11,8 +11,8 @@ var RESULTS = {
 
 
 describe('Solving', function () {
-    describe('basic solve', function () {
-        
+    describe('basic solve', function () {  
+
         it('resolve straigth', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
@@ -209,9 +209,7 @@ describe('Static section', function () {
         it('solves all the promises but one', (done) => {
             Balle.all([
                 new Balle(function (resolve, reject) {
-                    setTimeout(function () {
-                        resolve(100);
-                    }, 100);
+                    reject(RESULTS.CAUSE);
                 }),
                 new Balle(function (resolve, reject) {
                     setTimeout(function () {
@@ -220,7 +218,7 @@ describe('Static section', function () {
                 }),
                 new Balle(function (resolve, reject) {
                     setTimeout(function () {
-                        reject(RESULTS.CAUSE);
+                        resolve(300);
                     }, 300);
                 })
             ]).catch(function (cause) {

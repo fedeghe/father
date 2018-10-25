@@ -113,7 +113,8 @@ Balle.all = function (pros) {
 
     return new Balle(function (resolve, reject) {
         pros.forEach(function (pro, i) {
-            pro.status == 'REJECTED' && reject(pro.cause);
+            pro.status == 'REJECTED'
+                && reject(pro.cause);
             pro.then(function (v) {
                 solN++;
                 results[i] = v;
