@@ -137,7 +137,7 @@ Balle.chain = function (pros) {
     if (!Balle._isIterable(pros)) {
         return Balle.reject('Balle.chain acceps an Iterable Promise only');
     }
-    const l  = pros.length;
+    var l  = pros.length;
     return new Balle(function (res, rej) {
         (function chain(index, r) {
             return index == l

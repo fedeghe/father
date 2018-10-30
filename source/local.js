@@ -202,3 +202,37 @@ Balle.all([p1, p2, p3]).then(function (result){
 }).catch((c) => {
     console.log('cause is : ', c)
 })
+
+Balle.all([
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            res(1)
+        },100);
+    }),
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            res(2)
+        }, 110);
+    }),
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            res(3)
+        }, 130);
+    }),
+    Balle.one((res, rej) => {
+        
+            setTimeout(() => {
+                try{
+                    throw 'hello zzzz';
+                    // throw new Error('hello zzz')
+                } catch(e) {
+                    rej(e)
+                }
+                
+            }, 130);
+    })
+]).then((r) => {
+    console.log('result: ', r)
+}).catch((err) => {
+    console.log('the error is ' + err)
+})

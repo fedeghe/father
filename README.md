@@ -6,7 +6,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.5
+                                v. 1.0.13
 ...  I promise 
 </pre>
 
@@ -222,6 +222,31 @@ Balle.chain([
     console.log('----------');
 });
 ```
+
+**Balle.all async errors**
+``` js
+Balle.all([
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            res(3)
+        }, 1300);
+    }),
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            try{
+                throw 'Error occurred';
+                // OR throw new Error('Error occurred')
+            } catch(e) { rej(e); }
+        }, 200);
+    })
+]).then((r) => {
+    console.log('The result is', r)
+}).catch((err) => {
+    console.log('The error is', err)
+})
+```
+
+
 ---
 federico.ghedina@gmail.com  
-last build : 25/10/2018
+last build : 30/10/2018

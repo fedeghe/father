@@ -222,6 +222,31 @@ Balle.chain([
     console.log('----------');
 });
 ```
+
+**Balle.all async errors**
+``` js
+Balle.all([
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            res(3)
+        }, 1300);
+    }),
+    Balle.one((res, rej) => {
+        setTimeout(() => {
+            try{
+                throw 'Error occurred';
+                // OR throw new Error('Error occurred')
+            } catch(e) { rej(e); }
+        }, 200);
+    })
+]).then((r) => {
+    console.log('The result is', r)
+}).catch((err) => {
+    console.log('The error is', err)
+})
+```
+
+
 ---
 $AUTHOR$  
 last build : __DATE__
