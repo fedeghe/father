@@ -6,7 +6,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.13
+                                v. 1.0.14
 ...  I promise 
 </pre>
 
@@ -118,7 +118,7 @@ resolvingPromise.then(function (v){
 reject: 
 ``` js
 const rejectingPromise = new Balle();
-rejectingPromise.resolve('the cause');
+rejectingPromise.reject('the cause');
 rejectingPromise.catch(function (v){
     console.log(v === 'the cause')
 });
@@ -249,4 +249,4 @@ Balle.all([
 
 ---
 federico.ghedina@gmail.com  
-last build : 30/10/2018
+last build : 1/11/2018
