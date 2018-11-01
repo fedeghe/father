@@ -118,7 +118,7 @@ resolvingPromise.then(function (v){
 reject: 
 ``` js
 const rejectingPromise = new Balle();
-rejectingPromise.resolve('the cause');
+rejectingPromise.reject('the cause');
 rejectingPromise.catch(function (v){
     console.log(v === 'the cause')
 });
