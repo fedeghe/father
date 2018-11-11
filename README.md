@@ -6,7 +6,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.15
+                                v. 1.0.17
 ...  I promise 
 </pre>
 
@@ -249,4 +249,4 @@ Balle.all([
 
 ---
 federico.ghedina@gmail.com  
-last build : 1/11/2018
+last build : 11/11/2018
