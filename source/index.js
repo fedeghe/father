@@ -1,3 +1,9 @@
+function roll(els, name, inst) {
+    els.forEach(function (func) {
+        func(inst[name]);
+    }, inst);
+}
+
 function Balle(executor) {
     var self = this,
         done = false;
@@ -29,12 +35,6 @@ function Balle(executor) {
         return Balle.reject(e.message);
     }
     return this;
-}
-
-function roll(els, name, inst) {
-    els.forEach(function (func) {
-        func(inst[name]);
-    }, inst);
 }
 
 Balle.prototype.resolve = function (value) {

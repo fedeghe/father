@@ -1,7 +1,7 @@
 {
   "name": "balle",
-  "version": "1.0.17",
-  "description": "Simple promise implementation",
+  "version": "1.0.18",
+  "description": "Simple isomorphic promise implementation",
   "main": "index.js",
   "scripts": {
     "buildev": "malta source/buildev.json",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
-    "malta": "^3.8.14",
+    "malta": "^3.8.18",
     "malta-header-comment": "^1.0.4",
     "malta-millijs": "^1.0.2",
     "malta-mocha": "^1.0.9",
