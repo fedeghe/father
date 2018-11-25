@@ -6,7 +6,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.18
+                                v. 1.0.19
 ...  I promise 
 </pre>
 
@@ -31,6 +31,14 @@ No... the world does not need that shit but I need to try to understand.
 
 ```
 ---
+
+### small test on browser
+
+this will be soon replaced with a serious test using puppeteer:
+
+> open test/index.html with the browser and wait 3 seconds
+
+--- 
 
 ### usage
 
@@ -249,4 +257,4 @@ Balle.all([
 
 ---
 federico.ghedina@gmail.com  
-last build : 19/11/2018
+last build : 25/11/2018
