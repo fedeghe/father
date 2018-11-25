@@ -5,6 +5,6 @@
     "source/README.md": ". -vars=source/vars.json",
     "source/test/*.js": "test -plugins=malta-mocha",
     "source/test/*.html": "test",
-    "source/index.js": ". -plugins=malta-mocha...malta-millijs...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json",
+    "source/index.js": ". -plugins=malta-mocha...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json",
     "source/local.js": "."
 }
