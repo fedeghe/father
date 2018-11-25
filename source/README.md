@@ -32,6 +32,14 @@ No... the world does not need that shit but I need to try to understand.
 ```
 ---
 
+### small test on browser
+
+this will be soon replaced with a serious test using puppeteer:
+
+> open test/index.html with the browser and wait 3 seconds
+
+--- 
+
 ### usage
 
 Make a promise :
