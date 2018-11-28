@@ -1,12 +1,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/fedeghe/balle/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/balle?branch=master)
 [![Build Status](https://travis-ci.org/fedeghe/balle.svg?branch=master)](https://travis-ci.org/fedeghe/balle)
+[![Package Quality](https://npm.packagequality.com/shield/balle.svg)](https://packagequality.com/#?package=balle)
 
 <pre>
  _____ _____ __    __    _____
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.25
+                                v. 1.0.27
 ...  I promise 
 </pre>
 
@@ -257,4 +258,4 @@ Balle.all([
 
 ---
 federico.ghedina@gmail.com  
-last build : 27/11/2018
+last build : 28/11/2018
