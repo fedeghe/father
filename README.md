@@ -30,7 +30,17 @@ No... the world does not need that shit but I need to try to understand.
 Make a promise :
 
 ``` js
-const Balle  = require('balle');
+const Balle = require('balle');
+
+const p = new Balle((resolve, reject) => {
+    var before = +new Date;
+    setTimeout(() => {
+        Math.random() > .5
+        ? resolve([before, +new Date])
+        : reject('that`s the cause');
+    }, 2000);
+})
+
 // deal with success using then
 .then((result) => {
     console.log(result);
