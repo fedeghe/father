@@ -1,9 +1,8 @@
 {
     "EXE": [
-        "mkdir -p test"
+        "mkdir -p test dist"
     ],
-    "#source/*.md": ". -vars=source/vars.json",
     "#source/test/*.js": "test",
     "#source/test/*.html": "test",
-    "#source/index.js": ". -plugins=malta-millijs...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
+    "#source/index.js": "dist -plugins=malta-millijs...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
 }

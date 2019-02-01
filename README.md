@@ -7,7 +7,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.27
+
 ...  I promise 
 </pre>
 
@@ -19,42 +19,18 @@ No... the world does not need that shit but I need to try to understand.
 
 ---
 
-### install, build and test
+### install
 
 ```
-> npm i
-
-> npm run build
-
-> npm test 
-// OR
-> npm run cover
-
+> npm i balle
 ```
----
-
-### small test on browser
-
-this will be soon replaced with a serious test using puppeteer:
-
-> open test/index.html with the browser and wait 3 seconds
-
---- 
 
 ### usage
 
 Make a promise :
 
 ``` js
-const p = new Balle((resolve, reject) => {
-    var before = +new Date;
-    setTimeout(() => {
-        Math.random() > .5
-        ? resolve([before, +new Date])
-        : reject('that`s the cause');
-    }, 2000);
-})
-
+const Balle  = require('balle');
 // deal with success using then
 .then((result) => {
     console.log(result);
@@ -257,5 +233,4 @@ Balle.all([
 
 
 ---
-federico.ghedina@gmail.com  
-last build : 28/11/2018
+federico.ghedina@gmail.com

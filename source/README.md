@@ -7,7 +7,7 @@
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. $VERSION$
+
 ...  I promise 
 </pre>
 
@@ -254,8 +254,3 @@ Balle.all([
     console.log('The error is', err)
 })
 ```
-
-
----
-$AUTHOR$  
-last build : __DATE__

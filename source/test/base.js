@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Balle = require('../index.js');
+    Balle = require('../dist/index.js');
 
 var RESULTS = {
     STRING: 'promise resolved',
@@ -9,10 +9,8 @@ var RESULTS = {
     CHAIN_NOT_ITERABLE: 'Balle.chain acceps an Iterable Promise only'
 };
 
-
 describe('Solving', function () {
     describe('basic solve', function () {  
-
         it('resolve straigth', (done) => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
