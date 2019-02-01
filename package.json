@@ -2,7 +2,7 @@
   "name": "balle",
   "version": "1.0.29",
   "description": "Simple isomorphic promise implementation",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "buildev": "malta source/buildev.json",
     "build": "malta source/buildtr.json",
