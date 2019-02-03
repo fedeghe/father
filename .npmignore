@@ -1,7 +1,8 @@
 .coveralls.yml
+.travis.yml
 /coverage
 /node_modules
 .printVersion
 /local.js
 /test
-
+/source
