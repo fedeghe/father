@@ -1,6 +1,6 @@
 {
   "name": "balle",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Simple isomorphic promise implementation",
   "main": "dist/index.js",
   "scripts": {
