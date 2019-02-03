@@ -439,7 +439,7 @@ describe('Static section', function () {
             .then(function (res) {
                 throw 'This will not run';
             }).catch(function (message) {
-                assert.equal(message, 'executor is not a function');
+                assert.equal(!!message.match(/is\snot\sa\sfunction$/), true);
                 done();
             });
         });
