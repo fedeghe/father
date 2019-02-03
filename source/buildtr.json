@@ -4,5 +4,5 @@
     ],
     "#source/test/*.js": "test",
     "#source/test/*.html": "test",
-    "#source/index.js": "dist -plugins=malta-millijs...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
+    "#source/index.js": "dist -plugins=malta-js-uglify[compress:true,output:{max_line_len:200}]...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
 }
