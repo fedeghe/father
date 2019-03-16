@@ -4,5 +4,4 @@ _____ _____ __    __    _____
 |_____|__|__|_____|_____|_____|
                                 v. $VERSION$
 $AUTHOR$
-Build #__BUILDNUMBER__ on __DATE__ @ __TIME__
 Size: __SIZE__
