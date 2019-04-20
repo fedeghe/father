@@ -13,24 +13,29 @@ function Balle(executor) {
     this.resolvers = this.resolvers || [];
     this.rejectors = this.rejectors || [];
     this.finalizers = this.finalizers || [];
-    executor = executor || function () { };
+    executor = executor || function () {};
 
     try {
-        executor(function ___SOLVER(value) {
-            if (done || self.status !== Balle.STATUSES.PENDING) return;
-            done = true;
-            self.status = Balle.STATUSES.FULFILLED;
-            self.value = value;
-            Balle.roll(self.resolvers, 'value', self);
-            Balle.roll(self.finalizers, 'value', self);
-        }, function ___REJECTOR(cause) {
-            if (done || self.status !== Balle.STATUSES.PENDING) return;
-            done = true;
-            self.status = Balle.STATUSES.REJECTED;
-            self.cause = cause;
-            Balle.roll(self.rejectors, 'cause', self);
-            Balle.roll(self.finalizers, 'cause', self);
-        });
+        executor(
+            // SOLVER
+            function (value) {
+                if (done || self.status !== Balle.STATUSES.PENDING) return;
+                done = true;
+                self.status = Balle.STATUSES.FULFILLED;
+                self.value = value;
+                Balle.roll(self.resolvers, 'value', self);
+                Balle.roll(self.finalizers, 'value', self);
+            },
+            // REJECTOR
+            function (cause) {
+                if (done || self.status !== Balle.STATUSES.PENDING) return;
+                done = true;
+                self.status = Balle.STATUSES.REJECTED;
+                self.cause = cause;
+                Balle.roll(self.rejectors, 'cause', self);
+                Balle.roll(self.finalizers, 'cause', self);
+            }
+        );
     } catch (e) {
         return Balle.reject(e.message);
     }
@@ -75,6 +80,7 @@ Balle.prototype.catch = function (rej) {
             break;
         case Balle.STATUSES.REJECTED:
             return rej(this.cause);
+        default: break;
     }
     return this;
 };
@@ -140,7 +146,7 @@ Balle.chain = function (pros) {
     var l = pros.length;
     return new Balle(function (res, rej) {
         (function chain(index, r) {
-            return index == l
+            return index === l
                 ? res(r)
                 : pros[index](r)
                     .then(function (r) {
@@ -163,4 +169,5 @@ Balle.resolve = function (mix) {
             : res(mix);
     });
 };
+
 (typeof exports === 'object') && (module.exports = Balle);

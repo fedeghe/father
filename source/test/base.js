@@ -9,9 +9,9 @@ var RESULTS = {
     CHAIN_NOT_ITERABLE: 'Balle.chain acceps an Iterable Promise only'
 };
 
-describe('Solving', function () {
-    describe('basic solve', function () {  
-        it('resolve straigth', (done) => {
+describe('Solving', () => {
+    describe('basic solve', () => {  
+        it('resolve straigth', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
                 done();
@@ -21,66 +21,58 @@ describe('Solving', function () {
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
 
-        it('resolve straigth and then', (done) => {
+        it('resolve straigth and then', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
                 done();
             });
-            resolvingPromise.then(function (result) {
-                assert.equal(result, RESULTS.STRING);    
-            });
+            resolvingPromise.then(result => assert.equal(result, RESULTS.STRING));
             assert.equal(resolvingPromise.status, Balle.STATUSES.FULFILLED);
             assert.equal(resolvingPromise.value, RESULTS.STRING);
         });
 
-        it('resolve asynch ', (done) => {
+        it('resolve asynch ', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
-                    resolve(RESULTS.STRING);
-                }, 100);
+                setTimeout(() => resolve(RESULTS.STRING), 100);
             });
-            resolvingPromise.then((result) => {
+            resolvingPromise.then(result => {
                 assert.equal(result, RESULTS.STRING);
                 done();
             });
         });
 
-        it('resolve asynch and check the finally', (done) => {
+        it('resolve asynch and check the finally', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
-                    resolve(RESULTS.STRING);
-                }, 100);
+                setTimeout(() => resolve(RESULTS.STRING), 100);
             });
-            resolvingPromise.then((result) => {
+            resolvingPromise.then(result => {
                 // whatever
-            }).finally(function (result) {
+            }).finally(result => {
                 assert.equal(result, RESULTS.STRING);
                 done();
             });
         });
 
-        it('consume it then', (done) => {
+        it('consume it then', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
+                setTimeout(() => {
                     resolve(RESULTS.STRING);
                 }, 100);
             });
             /**
              * as u can see then has nothing to do with https://promisesaplus.com/
              */
-            resolvingPromise.then((result) => {
+            resolvingPromise.then(result => {
                 assert.equal(result, RESULTS.STRING);
-            }).finally(function (result) {
+            }).finally(result => {
                 assert.equal(result, RESULTS.STRING);
                 done();
             });
         });
 
-        it('catch from then ', (done) => {
+        it('catch from then ', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
-                    reject(RESULTS.CAUSE);
-                }, 100);
+                setTimeout(() => reject(RESULTS.CAUSE), 100);
             });
             /**
              * as u can see then has nothing to do with https://promisesaplus.com/
@@ -93,11 +85,9 @@ describe('Solving', function () {
             })
         });
 
-        it('go forward with catch & finally', (done) => {
+        it('go forward with catch & finally', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
-                    reject(RESULTS.CAUSE);
-                }, 100);
+                setTimeout(() => reject(RESULTS.CAUSE), 100);
             });
             let check = 0;
             resolvingPromise.then(() => {
@@ -105,49 +95,49 @@ describe('Solving', function () {
             }).catch((cause) => {
                 assert.equal(check++, 0);
                 assert.equal(cause, RESULTS.CAUSE);
-            }).finally(function (cause) {
+            }).finally(cause => {
                 assert.equal(check, 1);
                 done();
             });
         });
-        it('create empty one and then launch', (done) => {
+    
+        it('create empty one and then launch', done => {
             const resolvingPromise = Balle.one();
             var executor = (resolve, reject) => {
-                    setTimeout(function () {
-                        reject(RESULTS.CAUSE);
-                    }, 100);
+                    setTimeout(() => reject(RESULTS.CAUSE), 100);
                 };
             resolvingPromise.launch(executor).then(() => {
                 throw 'Never executed';
             }).catch((cause) => {
                 assert.equal(cause, RESULTS.CAUSE);
-            }).finally(function (cause) {
+            }).finally(cause => {
                 done();
             });
         });
 
-        it('solves straigth the instance', (done) => {
+        it('solves straigth the instance', done => {
             const resolvingPromise = Balle.one();
             resolvingPromise.resolve('this is the value');
-            resolvingPromise.then((r) => {
+            resolvingPromise.then(r => {
                 assert.equal(r, 'this is the value');
-                done()
+                done();
             });
-        })
+        });
+
         it('rejects straigth the instance', (done) => {
             const rejectingPromise = Balle.one();
             rejectingPromise.reject('this is the value');
-            rejectingPromise.catch((r) => {
+            rejectingPromise.catch(r => {
                 assert.equal(r, 'this is the value');
-                done()
+                done();
             });
-        })
+        });
     });
 });
 
-describe('Rejection', function () {
-    describe('basic reject', function () {
-        it('reject straigth', (done) => {
+describe('Rejection', () => {
+    describe('basic reject', () => {
+        it('reject straigth', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 reject(RESULTS.STRING);
                 done();
@@ -156,13 +146,13 @@ describe('Rejection', function () {
             assert.equal(resolvingPromise.value, undefined);
         });
 
-        it('reject asynch ', (done) => {
+        it('reject asynch ', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
-                setTimeout(function () {
+                setTimeout(() => {
                     reject(RESULTS.CAUSE);
                 }, 100);
             });
-            resolvingPromise.then((result) => {
+            resolvingPromise.then(result => {
                 console.log('NEVER EXEC SINCE REJECTED!!!!!')
                 assert.equal(result, 'irrelevant');
                 done();
@@ -176,127 +166,105 @@ describe('Rejection', function () {
     });
 });
 
-describe('Static section', function () {
-    describe('Balle.all', function () {
-        it('solves all the promises', (done) => {
+describe('Static section', () => {
+    describe('Balle.all', () => {
+        it('solves all the promises', done => {
             Balle.all([
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(100);
                     },100);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(101);
                     }, 200);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(102);
                     }, 300);
                 })
-            ]).then(function (res) {
+            ]).then(res => {
                 assert.equal(res[0], 100);
                 assert.equal(res[1], 101);
                 assert.equal(res[2], 102);
-            }).finally(function (res) {
+            }).finally(res => {
                 done();
             });
         });
 
         it('solves all the promises but one', (done) => {
             Balle.all([
-                new Balle(function (resolve, reject) {
-                    reject(RESULTS.CAUSE);
-                }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
-                        resolve(101);
-                    }, 200);
-                }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
-                        resolve(300);
-                    }, 300);
-                })
-            ]).catch(function (cause) {
+                new Balle((resolve, reject) => reject(RESULTS.CAUSE)),
+                new Balle((resolve, reject) => setTimeout(() => resolve(101), 200)),
+                new Balle((resolve, reject) => setTimeout(() => resolve(300), 300))
+            ]).catch(cause => {
                 assert.equal(cause, RESULTS.CAUSE);
                 done();
-            }).then(function (res) {
+            }).then(res => {
                 throw 'This will not run';
-            }).finally(function (res) {
+            }).finally(res => {
                 // FINALLY could break
                 assert.equal(res, RESULTS.CAUSE);
             });
         });
 
-        it('does not solves all cause not iterable', (done) => {
-            Balle.all({}).catch(function (cause) {
+        it('does not solves all cause not iterable', done => {
+            Balle.all({}).catch(cause => {
                 assert.equal(cause, RESULTS.ALL_NOT_ITERABLE);
                 done();
-            }).then(function (res) {
+            }).then(res => {
                 throw 'This will not run';
-            }).finally(function (res) {// done();
+            }).finally(res => // done();
                 // FINALLY could break
-                assert.equal(res, RESULTS.ALL_NOT_ITERABLE);
-            });
+                assert.equal(res, RESULTS.ALL_NOT_ITERABLE)
+            );
         });
     });
 
-    describe('Balle.chain', function () {
-        it('solve the chain as expected', (done) => {
+    describe('Balle.chain', () => {
+        it('solve the chain as expected', done => {
             Balle.chain([
-                () => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            res(100)
-                        }, 100);
-                    })
-                },
-                (r) => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            res(101 + r)
-                        }, 200);
-                    })
-                },
-                (r) => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            res(102 + r)
-                        }, 300);
-                    })
-                }
+                () => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        res(100)
+                    }, 100);
+                }),
+                r => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        res(101 + r)
+                    }, 200);
+                }),
+                r => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        res(102 + r)
+                    }, 300);
+                })
             ]).then((res) => {
                 assert.equal(res, 303);
                 done();
             });
         });
 
-        it('reject the chain as expected', (done) => {
+        it('reject the chain as expected', done => {
             Balle.chain([
-                () => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            res(100)
-                        }, 100);
-                    })
-                },
-                (r) => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            res(101 + r)
-                        }, 200);
-                    })
-                },
-                (r) => {
-                    return Balle.one((res, rej) => {
-                        setTimeout(() => {
-                            rej('an error occurred handling the given value: ' + r);
-                        }, 300);
-                    })
-                }
-            ]).then((res) => {
+                () => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        res(100)
+                    }, 100);
+                }),
+                r => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        res(101 + r)
+                    }, 200);
+                }),
+                r => Balle.one((res, rej) => {
+                    setTimeout(() => {
+                        rej('an error occurred handling the given value: ' + r);
+                    }, 300);
+                })
+            ]).then(res => {
                 throw 'This will not run';
             }).catch((cause) => {
                 assert.equal(cause, 'an error occurred handling the given value: 201');
@@ -304,108 +272,108 @@ describe('Static section', function () {
             });
         });
 
-        it('does not solves all cause not iterable', (done) => {
-            Balle.chain({}).catch(function (cause) {
+        it('does not solves all cause not iterable', done => {
+            Balle.chain({}).catch(cause => {
                 assert.equal(cause, RESULTS.CHAIN_NOT_ITERABLE);
                 done();
-            }).then(function (res) {
+            }).then(res => {
                 throw 'This will not run';
-            }).finally(function (res) {// done();
+            }).finally(res => {// done();
                 // FINALLY could break
                 assert.equal(res, RESULTS.CHAIN_NOT_ITERABLE);
             });
         });
     })
 
-    describe('Balle.race', function () {
-        it('the right winner', (done) => {
+    describe('Balle.race', () => {
+        it('the right winner', done => {
             Balle.race([
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(1000);
                     }, 100);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(Math.PI);
                     }, 200);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(9876543210);
                     }, 300);
                 })
-            ]).then(function (res) {
+            ]).then(res => {
                 assert.equal(res, 1000);
-            }).finally(function (res) {
+            }).finally(res => {
                 assert.equal(res, 1000);
                 done();
             });
         });
-        it('the right winner, one rejects, catched', (done) => {
+        it('the right winner, one rejects, catched', done => {
             Balle.race([
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         reject(1000);
                     }, 100);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(Math.PI);
                     }, 200);
                 }),
-                new Balle(function (resolve, reject) {
-                    setTimeout(function () {
+                new Balle((resolve, reject) => {
+                    setTimeout(() => {
                         resolve(9876543210);
                     }, 300);
                 })
-            ]).then(function () {
+            ]).then(() => {
                 throw new Error('Never thrown');
-            }).catch(function (res) {
+            }).catch(res => {
                 assert.equal(res, 1000);
                 done();
-            }).finally(function (res) {
+            }).finally(res => {
                 assert.equal(res, 1000);
             });
         });
         it('does not solves all cause not iterable', (done) => {
-            Balle.race({}).catch(function (cause) {
+            Balle.race({}).catch(cause => {
                 assert.equal(cause, RESULTS.RACE_NOT_ITERABLE);
                 done();
-            }).then(function (res) {
+            }).then(res => {
                 throw 'This will not run';
-            }).finally(function (res) {// done();
+            }).finally(res => {// done();
                 // FINALLY could break
                 assert.equal(res, RESULTS.RACE_NOT_ITERABLE);
             });
         });
     });
 
-    describe('Balle.reject', function () {
+    describe('Balle.reject', () => {
         it('rejects as expected', (done) => {
-            Balle.reject(RESULTS.CAUSE).catch(function (cause) {
+            Balle.reject(RESULTS.CAUSE).catch(cause => {
                 assert.equal(cause, RESULTS.CAUSE);
                 done();
-            }).then(function (res) {
+            }).then(res => {
                 throw 'This will not run';
-            }).finally(function (res) {// done();
+            }).finally(res => {// done();
                 // FINALLY could break
                 assert.equal(res, RESULTS.CAUSE);
             });
         });
     });
 
-    describe('Balle.resolve', function () {
+    describe('Balle.resolve', () => {
         it('resolve as expected passing a promise', (done) => {
-            var p = new Balle(function (resolve) {
-                setTimeout(function () {
+            var p = new Balle(resolve => {
+                setTimeout(() => {
                     resolve(RESULTS.STRING);
                 }, 200);
             });
-            Balle.resolve(p).then(function (result) {
+            Balle.resolve(p).then(result => {
                 assert.equal(result, RESULTS.STRING);
                 done();
-            }).finally(function (res) {// done();
+            }).finally(res =>  {// done();
                 // FINALLY could break
                 assert.equal(res, RESULTS.STRING);
             });
@@ -413,48 +381,48 @@ describe('Static section', function () {
         it('resolve as expected passing a value', (done) => {
             var p = new Balle();
             Balle.resolve(RESULTS.STRING)
-            .then(function (result) {
+            .then(result => {
                 assert.equal(result, RESULTS.STRING);
                 done();
-            }).finally(function (res) {// done();
+            }).finally(res =>  {// done();
                 // FINALLY could break
                 assert.equal(res, RESULTS.STRING);
             });
         });
     });
 
-    describe('Some edge cases', function () {
+    describe('Some edge cases', () => {
         it('try to reject a solved one', (done) => {
-            var p = new Balle(function (resolve, reject) {
+            var p = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
                 reject(200);
                 
-            }).then(function (res) {
+            }).then(res => {
                 assert.equal(res, RESULTS.STRING);
                 done();
             });
         });
         it('not a function passed to constructor', (done) => {
             Balle.one('not null but not a function')
-            .then(function (res) {
+            .then(res => {
                 throw 'This will not run';
-            }).catch(function (message) {
+            }).catch(message => {
                 assert.equal(!!message.match(/is\snot\sa\sfunction$/), true);
                 done();
             });
         });
     });
 
-    describe('utilities', function () {
+    describe('utilities', () => {
         it('isFunc', () => {
-            assert.equal(Balle._isFunc(function () {}), true);
+            assert.equal(Balle._isFunc(() => {}), true);
             assert.equal(Balle._isFunc({}), false);
             assert.equal(Balle._isFunc(1), false);
             assert.equal(Balle._isFunc('function'), false);
             assert.equal(Balle._isFunc([1,2,3,4,5]), false);  
         });
         it('isIterable', () => {
-            assert.equal(Balle._isIterable(function () { }), false);
+            assert.equal(Balle._isIterable(() => {}), false);
             assert.equal(Balle._isIterable({}), false);
             assert.equal(Balle._isIterable(1), false);
             assert.equal(Balle._isIterable('function'), true);
