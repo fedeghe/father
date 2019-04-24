@@ -8,8 +8,8 @@ function Balle(executor) {
     var self = this,
         done = false;
     this.status = Balle.STATUSES.PENDING;
-    this.value = undefined;
-    this.cause = undefined;
+    this.value = null;
+    this.cause = null;
     this.resolvers = this.resolvers || [];
     this.rejectors = this.rejectors || [];
     this.finalizers = this.finalizers || [];
@@ -69,6 +69,8 @@ Balle.prototype.then = function (res, rej) {
             break;
         case Balle.STATUSES.FULFILLED:
             res(this.value);
+            break;
+        default: break;
     }
     return this;
 };
@@ -79,7 +81,7 @@ Balle.prototype.catch = function (rej) {
             this.rejectors.push(rej);
             break;
         case Balle.STATUSES.REJECTED:
-            return rej(this.cause);
+            return rej.call(this, this.cause);
         default: break;
     }
     return this;
@@ -87,6 +89,8 @@ Balle.prototype.catch = function (rej) {
 
 Balle.prototype.finally = function (cb) {
     this.finalizers.push(cb);
+    this.status !== Balle.STATUSES.PENDING
+    && Balle.roll(this.finalizers, 'value', this);
     return this;
 };
 
