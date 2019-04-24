@@ -10,7 +10,7 @@ var RESULTS = {
 };
 
 describe('Solving', () => {
-    describe('basic solve', () => {  
+    describe('basic solve', () => {
         it('resolve straigth', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 resolve(RESULTS.STRING);
@@ -53,15 +53,25 @@ describe('Solving', () => {
             });
         });
 
+        it('resolve asynch and check the finally early', done => {
+            const resolvingPromise = new Balle((resolve, reject) => {
+                resolve(RESULTS.STRING);
+            });
+            resolvingPromise.then(result => {
+                // whatever
+            }).finally(result => {
+                assert.equal(result, RESULTS.STRING);
+                done();
+            });
+        });
+
         it('consume it then', done => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(() => {
                     resolve(RESULTS.STRING);
                 }, 100);
             });
-            /**
-             * as u can see then has nothing to do with https://promisesaplus.com/
-             */
+            // as u can see then has nothing to do with https://promisesaplus.com/
             resolvingPromise.then(result => {
                 assert.equal(result, RESULTS.STRING);
             }).finally(result => {
@@ -74,9 +84,7 @@ describe('Solving', () => {
             const resolvingPromise = new Balle((resolve, reject) => {
                 setTimeout(() => reject(RESULTS.CAUSE), 100);
             });
-            /**
-             * as u can see then has nothing to do with https://promisesaplus.com/
-             */
+            // as u can see then has nothing to do with https://promisesaplus.com/
             resolvingPromise.then(() => {
                 throw 'Never executed';
             }, (cause) => {
@@ -132,8 +140,10 @@ describe('Solving', () => {
                 done();
             });
         });
+
     });
 });
+
 
 describe('Rejection', () => {
     describe('basic reject', () => {
@@ -216,10 +226,10 @@ describe('Static section', () => {
                 done();
             }).then(res => {
                 throw 'This will not run';
-            }).finally(res => // done();
+            }).finally(res => {
                 // FINALLY could break
                 assert.equal(res, RESULTS.ALL_NOT_ITERABLE)
-            );
+            });
         });
     });
 
@@ -339,7 +349,7 @@ describe('Static section', () => {
         it('does not solves all cause not iterable', (done) => {
             Balle.race({}).catch(cause => {
                 assert.equal(cause, RESULTS.RACE_NOT_ITERABLE);
-                done();
+                done()
             }).then(res => {
                 throw 'This will not run';
             }).finally(res => {// done();
