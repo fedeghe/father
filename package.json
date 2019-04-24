@@ -28,7 +28,7 @@
   "devDependencies": {
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
-    "malta": "^3.8.18",
+    "malta": "^3.9.14",
     "malta-header-comment": "^1.0.4",
     "malta-js-uglify": "^1.0.3",
     "malta-mocha": "^1.0.9",
