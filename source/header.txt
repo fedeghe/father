@@ -2,6 +2,6 @@ _____ _____ __    __    _____
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. $VERSION$
-$AUTHOR$
+                                v. $PACKAGE.version$
+Author: $AUTHOR$
 Size: __SIZE__
