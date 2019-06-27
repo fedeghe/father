@@ -1,6 +1,6 @@
 {
   "name": "balle",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "description": "Simple isomorphic promise implementation",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,6 @@
     "test": "mocha",
     "_cover": "istanbul cover _mocha",
     "_coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-
     "cover": "nyc npm test && nyc report --reporter=html",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "prepublish": "npm run build"
