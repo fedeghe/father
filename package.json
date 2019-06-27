@@ -8,8 +8,11 @@
     "build": "malta source/buildtr.json",
     "clean": "malta source/clean.json",
     "test": "mocha",
-    "cover": "istanbul cover _mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "_cover": "istanbul cover _mocha",
+    "_coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+
+    "cover": "nyc npm test && nyc report --reporter=html",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -27,12 +30,12 @@
   "homepage": "https://github.com/fedeghe/balle#readme",
   "devDependencies": {
     "coveralls": "^3.0.2",
-    "istanbul": "^0.4.5",
-    "malta": "^3.9.14",
+    "malta": "^3.9.16",
     "malta-header-comment": "^1.0.4",
     "malta-js-uglify": "^1.0.3",
     "malta-mocha": "^1.0.9",
     "mocha": "^5.2.0",
-    "mocha-lcov-reporter": "^1.3.0"
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^14.1.1"
   }
 }
