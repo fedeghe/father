@@ -6,3 +6,4 @@
 /test
 /source/balle2.js
 /.nyc_output
+.buildNum.json
