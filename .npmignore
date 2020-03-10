@@ -2,6 +2,7 @@
 .travis.yml
 /coverage
 /node_modules
+/source
 .printVersion
 /local.js
 /test
