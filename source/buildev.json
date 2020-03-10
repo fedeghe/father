@@ -4,5 +4,6 @@
     ],
     "source/test/*.js": "test -plugins=malta-mocha",
     "source/test/*.html": "test",
+    "source/LICENSE.md": ".",
     "source/index.js": "dist -plugins=malta-mocha...malta-header-comment[name:\"source/header.txt\"] -vars=source/vars.json"
 }
