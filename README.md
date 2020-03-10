@@ -19,11 +19,14 @@ No... the world does not need that shit but I need to try to understand.
 
 ---
 
-### install
+### install & test
 
+``` shell
+@ yarn
+@ yarn test 
+@ yarn cover
 ```
-> npm i balle
-```
+---
 
 ### usage
 
@@ -31,7 +34,6 @@ Make a promise :
 
 ``` js  
 const Balle = require('balle');
-
 const p = new Balle((resolve, reject) => {
     var before = +new Date;
     setTimeout(() => {
@@ -123,6 +125,7 @@ rejectingPromise.catch(function (v){
 
 
 **Balle.one**
+
 ``` js  
 // wraps the constructor call
 const p1 = new Balle(/* executor func */);
@@ -154,7 +157,7 @@ const p = Balle.all([
 });
 ```
 
-**Balle.race**  
+**Balle.race** 
 
 ``` js  
 const init = +new Date;
@@ -244,6 +247,3 @@ Balle.all([
     console.log('The error is', err)
 })
 ```
-
----
-federico.ghedina@gmail.com

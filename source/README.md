@@ -19,33 +19,21 @@ No... the world does not need that shit but I need to try to understand.
 
 ---
 
-### install, build and test
+### install & test
 
-```
-> npm i
-
-> npm run build
-
-> npm test 
-// OR
-> npm run cover
-
+``` shell
+@ yarn
+@ yarn test 
+@ yarn cover
 ```
 ---
-
-### small test on browser
-
-this will be soon replaced with a serious test using puppeteer:
-
-> open test/index.html with the browser and wait 3 seconds
-
---- 
 
 ### usage
 
 Make a promise :
 
 ``` js  
+const Balle = require('balle');
 const p = new Balle((resolve, reject) => {
     var before = +new Date;
     setTimeout(() => {
