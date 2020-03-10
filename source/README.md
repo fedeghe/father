@@ -45,7 +45,7 @@ this will be soon replaced with a serious test using puppeteer:
 
 Make a promise :
 
-``` js
+``` js  
 const p = new Balle((resolve, reject) => {
     var before = +new Date;
     setTimeout(() => {
@@ -76,7 +76,7 @@ const p = new Balle((resolve, reject) => {
 
 reject a promise: 
 
-``` js
+``` js  
 const p = new Balle((resolve, reject) => {
     var err = 'Ups... something went wrong';
     setTimeout(() => {
@@ -116,7 +116,7 @@ resolvingPromise
 ```
 
 resolve:
-``` js
+``` js  
 const resolvingPromise = new Balle();
 resolvingPromise.resolve('the value');
 resolvingPromise.then(function (v){
@@ -125,7 +125,7 @@ resolvingPromise.then(function (v){
 ``` 
 
 reject: 
-``` js
+``` js  
 const rejectingPromise = new Balle();
 rejectingPromise.reject('the cause');
 rejectingPromise.catch(function (v){
@@ -137,7 +137,8 @@ rejectingPromise.catch(function (v){
 
 
 **Balle.one**
-``` js
+
+``` js  
 // wraps the constructor call
 const p1 = new Balle(/* executor func */);
 // can be written
@@ -145,7 +146,8 @@ const p1 = Balle.one(/* executor func */);
 ```
 
 **Balle.all**  
-``` js
+
+``` js  
 const init = +new Date;
 const p = Balle.all([
     Balle.one((resolve, reject) => {
@@ -168,7 +170,8 @@ const p = Balle.all([
 ```
 
 **Balle.race** 
-``` js
+
+``` js  
 const init = +new Date;
 const p = Balle.race([
     Balle.one((resolve, reject) => {
@@ -191,7 +194,8 @@ const p = Balle.race([
 ```
 
 **Balle.chain** 
-``` js
+
+``` js  
 Balle.chain([
     () => {
         return Balle.one((resolve, reject) => {
@@ -233,7 +237,8 @@ Balle.chain([
 ```
 
 **Balle.all async errors**
-``` js
+
+``` js  
 Balle.all([
     Balle.one((res, rej) => {
         setTimeout(() => {
