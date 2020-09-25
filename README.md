@@ -185,43 +185,31 @@ const p = Balle.race([
 
 ``` js  
 Balle.chain([
-    () => {
-        return Balle.one((resolve, reject) => {
-            setTimeout(() => {
-                Math.random() > .5
+    () => Balle.one((resolve, reject) => 
+        setTimeout(() => 
+            Math.random() > .5
                 ? reject('a problem occurred at #1')
                 : resolve(100)
-            }, 100);
-        })
-    },
-    (r) => {
-        return Balle.one((resolve, reject) => {
-            setTimeout(() => {
-                Math.random() > .5
+        , 100)
+    ),
+    r => Balle.one((resolve, reject) => 
+        setTimeout(() => 
+            Math.random() > .5
                 ? reject('a problem occurred at #2')
                 : resolve(101 + r)
-            }, 200);
-        })
-    },
-    (r) => {
-        return Balle.one((resolve, reject) => {
-            setTimeout(() => {
-                Math.random() > .5
+        , 200)
+    ),
+    r => Balle.one((resolve, reject) => 
+        setTimeout(() => 
+            Math.random() > .5
                 ? reject('a problem occurred at #3')
                 : resolve(102 + r)
-            }, 300);
-        })
-    }
+        , 300)
+    )
 ])
-.then((r) =>{
-    console.log('result : '+ r)
-})
-.catch((cause)=>{
-    console.log('cause : '+ cause)
-})
-.finally(() => {
-    console.log('----------');
-});
+.then(r => console.log('result : '+ r))
+.catch(cause => console.log('cause : '+ cause))
+.finally(() => console.log('----- finally -----'));
 ```
 
 **Balle.all async errors**
