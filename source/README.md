@@ -36,26 +36,24 @@ Make a promise :
 const Balle = require('balle');
 const p = new Balle((resolve, reject) => {
     var before = +new Date;
-    setTimeout(() => {
+    setTimeout(() => 
         Math.random() > .5
-        ? resolve([before, +new Date])
-        : reject('that`s the cause');
-    }, 2000);
+            ? resolve([before, +new Date])
+            : reject('that`s the cause')
+    , 2000);
 })
 
 // deal with success using then
-.then((result) => {
-    console.log(result);
-})
+.then(result => console.log(result))
 
 // deal with rejection | thrown error using catch
-.catch((whatever) => {
+.catch(whatever => {
     console.log('Failure:');
     console.log(whatever);
 })
 
 // do something anyway
-.finally((result_cause_error) => {
+.finally(result_cause_error => {
     // get the result in case on resolution or the cause
     // in case of rejection|error
     console.log('Executed regardless the resolution or rejection')
@@ -65,19 +63,14 @@ const p = new Balle((resolve, reject) => {
 reject a promise: 
 
 ``` js  
-const p = new Balle((resolve, reject) => {
-    var err = 'Ups... something went wrong';
-    setTimeout(() => {
-        reject(err);
-    }, 1000);
-})
-.then(() => {
-    throw 'never thrown';
-})
-.catch((cause) => {
-    // this will in any case here
-    console.log(cause);
-});
+const p = new Balle((resolve, reject) => 
+    setTimeout(() => reject('Ups... something went wrong'), 1000)
+)
+.then(() => { throw 'never thrown'; })
+.catch((cause) => 
+    // this will log
+    console.log(cause)
+);
 ```
 
 late launch: 
@@ -91,34 +84,28 @@ resolvingPromise
 })
 .catch((cause) => {
     console.log('catched: ' + cause);
-}).finally(function (cause) {
-    console.log('finally : ' + cause);
-});
+}).finally(cause => console.log('finally : ' + cause));
 
 resolvingPromise
-.launch((resolve, reject) => {
+.launch((resolve, reject) => 
     setTimeout(function () {
         reject('a problem occurred');
-    }, 100);
-});
+    }, 100)
+);
 ```
 
 resolve:
 ``` js  
 const resolvingPromise = new Balle();
 resolvingPromise.resolve('the value');
-resolvingPromise.then(function (v){
-    console.log(v === 'the value')
-});
+resolvingPromise.then(v => console.log(v === 'the value'));
 ``` 
 
 reject: 
 ``` js  
 const rejectingPromise = new Balle();
 rejectingPromise.reject('the cause');
-rejectingPromise.catch(function (v){
-    console.log(v === 'the cause')
-});
+rejectingPromise.catch(v => console.log(v === 'the cause'));
 ```
 
 
@@ -138,21 +125,21 @@ const p1 = Balle.one(/* executor func */);
 ``` js  
 const init = +new Date;
 const p = Balle.all([
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(500) }, 1000);
-    }),
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(200) }, 2000); // +++
-    }),
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(300) }, 1500);
-    }),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(500), 1000)
+    ),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(200), 2000)
+    ),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(300), 1500)
+    ),
 ])
 .then((result) => {
     console.log((+new Date - init)+ ' ≈ 2000');
     console.log(result); // ---> [500, 200, 300]
 })
-.catch((cause) => {
+.catch(() => {
     throw 'never thrown';
 });
 ```
@@ -162,21 +149,21 @@ const p = Balle.all([
 ``` js  
 const init = +new Date;
 const p = Balle.race([
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(500) }, 1000); // +++ 
-    }),
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(200) }, 1500);
-    }),
-    Balle.one((resolve, reject) => {
-        setTimeout(() => { resolve(300) }, 2000);
-    }),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(500), 1000)
+    ),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(200), 1500)
+    ),
+    Balle.one((resolve, reject) => 
+        setTimeout(() => resolve(300), 2000)
+    ),
 ])
 .then((result) => {
     console.log((+new Date - init) + ' ≈ 1000');
     console.log(result + ' == 500'); 
 })
-.catch((cause) => {
+.catch(() => {
     throw 'never thrown';
 });
 ```
@@ -216,22 +203,17 @@ Balle.chain([
 
 ``` js  
 Balle.all([
-    Balle.one((res, rej) => {
+    Balle.one((res, rej) => 
+        setTimeout(() => res(3), 1300)
+    ),
+    Balle.one((res, rej) => 
         setTimeout(() => {
-            res(3)
-        }, 1300);
-    }),
-    Balle.one((res, rej) => {
-        setTimeout(() => {
-            try{
+            try {
                 throw 'Error occurred';
-                // OR throw new Error('Error occurred')
             } catch(e) { rej(e); }
-        }, 200);
-    })
-]).then((r) => {
-    console.log('The result is', r)
-}).catch((err) => {
-    console.log('The error is', err)
-})
+        }, 200)
+    )
+])
+.then(r => console.log('The result is', r))
+.catch(err => console.log('The error is', err));
 ```
