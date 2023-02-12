@@ -70,7 +70,6 @@ Balle.prototype.then = function (res, rej) {
         case Balle.STATUSES.FULFILLED:
             res(this.value);
             break;
-        default: break;
     }
     return this;
 };
@@ -82,7 +81,6 @@ Balle.prototype.catch = function (rej) {
             break;
         case Balle.STATUSES.REJECTED:
             return rej.call(this, this.cause);
-        default: break;
     }
     return this;
 };

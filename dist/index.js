@@ -4,9 +4,9 @@ _____ _____ __    __    _____
 | __  |  _  |  |  |  |  |   __|
 | __ -|     |  |__|  |__|   __|
 |_____|__|__|_____|_____|_____|
-                                v. 1.0.45
+                                v. 1.0.46
 Author: federico.ghedina@gmail.com
-Size: ~2KB
+Size: ~2.9KB
 
 */
 function Balle(e){var l=this,t=!1;this.status=Balle.STATUSES.PENDING,this.value=null,this.cause=null,this.resolvers=this.resolvers||[],this.rejectors=this.rejectors||[],
